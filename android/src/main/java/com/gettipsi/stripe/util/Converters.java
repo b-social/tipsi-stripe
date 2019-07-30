@@ -16,6 +16,8 @@ import com.google.android.gms.wallet.PaymentData;
 import com.stripe.android.model.Address;
 import com.stripe.android.model.BankAccount;
 import com.stripe.android.model.Card;
+import com.stripe.android.model.PaymentMethod;
+import com.stripe.android.model.PaymentMethodCreateParams;
 import com.stripe.android.model.Source;
 import com.stripe.android.model.SourceCodeVerification;
 import com.stripe.android.model.SourceOwner;
@@ -48,6 +50,22 @@ public class Converters {
     }
     if (token.getBankAccount() != null) {
       newToken.putMap("bankAccount", convertBankAccountToWritableMap(token.getBankAccount()));
+    }
+
+    return newToken;
+  }
+
+  public static WritableMap convertPaymentMethodToWritableMap(PaymentMethod paymentMethod) {
+    WritableMap newToken = Arguments.createMap();
+
+    if (paymentMethod == null) return newToken;
+
+    newToken.putString("tokenId", paymentMethod.id);
+    newToken.putBoolean("livemode", paymentMethod.liveMode);
+    newToken.putDouble("created", paymentMethod.created);
+
+    if (paymentMethod.card != null) {
+      newToken.putMap("card", convertPaymentMethodCardToWritableMap(paymentMethod.card));
     }
 
     return newToken;
@@ -88,6 +106,21 @@ public class Converters {
     result.putString("fingerprint", card.getFingerprint() );
     result.putString("country", card.getCountry() );
     result.putString("currency", card.getCurrency() );
+
+    return result;
+  }
+
+  private static WritableMap convertPaymentMethodCardToWritableMap(final PaymentMethod.Card card) {
+    WritableMap result = Arguments.createMap();
+
+    if (card == null) return result;
+
+    result.putInt("expMonth", card.expiryMonth);
+    result.putInt("expYear", card.expiryYear);
+    result.putString("last4", card.last4);
+    result.putString("brand", card.brand);
+    result.putString("funding", card.funding);
+    result.putString("country", card.country);
 
     return result;
   }
@@ -170,30 +203,22 @@ public class Converters {
   }
 
   public static Card createCard(final ReadableMap cardData) {
-    return new Card(
-      // required fields
+    return new Card.Builder(
       cardData.getString("number"),
       cardData.getInt("expMonth"),
       cardData.getInt("expYear"),
-      // additional fields
-      getValue(cardData, "cvc"),
-      getValue(cardData, "name"),
-      getValue(cardData, "addressLine1"),
-      getValue(cardData, "addressLine2"),
-      getValue(cardData, "addressCity"),
-      getValue(cardData, "addressState"),
-      getValue(cardData, "addressZip"),
-      getValue(cardData, "addressCountry"),
-      getValue(cardData, "brand"),
-      getValue(cardData, "last4"),
-      getValue(cardData, "fingerprint"),
-      getValue(cardData, "funding"),
-      getValue(cardData, "country"),
-      getValue(cardData, "currency"),
-      getValue(cardData, "id")
-    );
+      getValue(cardData, "cvc"))
+      .build();
   }
 
+  public static PaymentMethodCreateParams.Card createPaymentMethodCard(final ReadableMap cardData) {
+    return new PaymentMethodCreateParams.Card.Builder()
+      .setNumber(cardData.getString("number"))
+      .setExpiryMonth(cardData.getInt("expMonth"))
+      .setExpiryYear( cardData.getInt("expYear"))
+      .setCvc(cardData.getString("cvc"))
+      .build();
+  }
 
 
   @NonNull
@@ -378,20 +403,6 @@ public class Converters {
     putIfNotEmpty(result, "sortingCode", address.getSortingCode());
 
     return result;
-  }
-
-  public static BankAccount createBankAccount(ReadableMap accountData) {
-    BankAccount account = new BankAccount(
-      // required fields only
-      accountData.getString("accountNumber"),
-      accountData.getString("countryCode"),
-      accountData.getString("currency"),
-      getValue(accountData, "routingNumber", "")
-    );
-    account.setAccountHolderName(getValue(accountData, "accountHolderName"));
-    account.setAccountHolderType(getValue(accountData, "accountHolderType"));
-
-    return account;
   }
 
   public static String getStringOrNull(@NonNull ReadableMap map, @NonNull String key) {
