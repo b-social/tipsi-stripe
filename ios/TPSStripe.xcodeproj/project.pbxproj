@@ -12,6 +12,15 @@
 		3A4EF3251DC8F90100A7C0BD /* TPSCardFieldManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A4EF3241DC8F90100A7C0BD /* TPSCardFieldManager.m */; };
 		3A4EF3281DC8FD4600A7C0BD /* TPSCardField.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A4EF3271DC8FD4600A7C0BD /* TPSCardField.m */; };
 		3C0CB3831E6D765D00CF5D16 /* Stripe.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C0CB3821E6D765D00CF5D16 /* Stripe.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		95BAEFDB23044DFA00C515DE /* RCTConvert+STPCardBrand.m in Sources */ = {isa = PBXBuildFile; fileRef = 95BAEFCA23044DF900C515DE /* RCTConvert+STPCardBrand.m */; };
+		95BAEFDC23044DFA00C515DE /* RCTConvert+STPPaymentMethod.m in Sources */ = {isa = PBXBuildFile; fileRef = 95BAEFCB23044DF900C515DE /* RCTConvert+STPPaymentMethod.m */; };
+		95BAEFDD23044DFA00C515DE /* RCTConvert+STPCardFundingType.m in Sources */ = {isa = PBXBuildFile; fileRef = 95BAEFCC23044DF900C515DE /* RCTConvert+STPCardFundingType.m */; };
+		95BAEFDE23044DFA00C515DE /* RCTConvert+STPPaymentMethodCard.m in Sources */ = {isa = PBXBuildFile; fileRef = 95BAEFCD23044DF900C515DE /* RCTConvert+STPPaymentMethodCard.m */; };
+		95BAEFDF23044DFA00C515DE /* RCTConvert+STPBankAccountStatus.m in Sources */ = {isa = PBXBuildFile; fileRef = 95BAEFCF23044DF900C515DE /* RCTConvert+STPBankAccountStatus.m */; };
+		95BAEFE023044DFA00C515DE /* RCTConvert+STPToken.m in Sources */ = {isa = PBXBuildFile; fileRef = 95BAEFD123044DF900C515DE /* RCTConvert+STPToken.m */; };
+		95BAEFE123044DFA00C515DE /* RCTConvert+STPCard.m in Sources */ = {isa = PBXBuildFile; fileRef = 95BAEFD323044DF900C515DE /* RCTConvert+STPCard.m */; };
+		95BAEFE223044DFA00C515DE /* RCTConvert+STPBankAccountHolderType.m in Sources */ = {isa = PBXBuildFile; fileRef = 95BAEFD523044DF900C515DE /* RCTConvert+STPBankAccountHolderType.m */; };
+		95BAEFE323044DFA00C515DE /* STPAPIClient+ApplePayWithPaymentMethod.m in Sources */ = {isa = PBXBuildFile; fileRef = 95BAEFD923044DFA00C515DE /* STPAPIClient+ApplePayWithPaymentMethod.m */; };
 		B81C8CDE1F978E320021EB09 /* TPSError.m in Sources */ = {isa = PBXBuildFile; fileRef = B81C8CDD1F978E320021EB09 /* TPSError.m */; };
 /* End PBXBuildFile section */
 
@@ -37,6 +46,24 @@
 		3A4EF3261DC8FD4600A7C0BD /* TPSCardField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TPSCardField.h; sourceTree = "<group>"; };
 		3A4EF3271DC8FD4600A7C0BD /* TPSCardField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TPSCardField.m; sourceTree = "<group>"; };
 		3C0CB3821E6D765D00CF5D16 /* Stripe.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Stripe.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		95BAEFC923044DF900C515DE /* RCTConvert+STPPaymentMethod.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "RCTConvert+STPPaymentMethod.h"; sourceTree = "<group>"; };
+		95BAEFCA23044DF900C515DE /* RCTConvert+STPCardBrand.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "RCTConvert+STPCardBrand.m"; sourceTree = "<group>"; };
+		95BAEFCB23044DF900C515DE /* RCTConvert+STPPaymentMethod.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "RCTConvert+STPPaymentMethod.m"; sourceTree = "<group>"; };
+		95BAEFCC23044DF900C515DE /* RCTConvert+STPCardFundingType.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "RCTConvert+STPCardFundingType.m"; sourceTree = "<group>"; };
+		95BAEFCD23044DF900C515DE /* RCTConvert+STPPaymentMethodCard.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "RCTConvert+STPPaymentMethodCard.m"; sourceTree = "<group>"; };
+		95BAEFCE23044DF900C515DE /* RCTConvert+STPBankAccountHolderType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "RCTConvert+STPBankAccountHolderType.h"; sourceTree = "<group>"; };
+		95BAEFCF23044DF900C515DE /* RCTConvert+STPBankAccountStatus.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "RCTConvert+STPBankAccountStatus.m"; sourceTree = "<group>"; };
+		95BAEFD023044DF900C515DE /* RCTConvert+STPToken.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "RCTConvert+STPToken.h"; sourceTree = "<group>"; };
+		95BAEFD123044DF900C515DE /* RCTConvert+STPToken.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "RCTConvert+STPToken.m"; sourceTree = "<group>"; };
+		95BAEFD223044DF900C515DE /* RCTConvert+STPCardBrand.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "RCTConvert+STPCardBrand.h"; sourceTree = "<group>"; };
+		95BAEFD323044DF900C515DE /* RCTConvert+STPCard.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "RCTConvert+STPCard.m"; sourceTree = "<group>"; };
+		95BAEFD423044DF900C515DE /* STPAPIClient+ApplePayWithPaymentMethod.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "STPAPIClient+ApplePayWithPaymentMethod.h"; sourceTree = "<group>"; };
+		95BAEFD523044DF900C515DE /* RCTConvert+STPBankAccountHolderType.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "RCTConvert+STPBankAccountHolderType.m"; sourceTree = "<group>"; };
+		95BAEFD623044DF900C515DE /* RCTConvert+STPCard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "RCTConvert+STPCard.h"; sourceTree = "<group>"; };
+		95BAEFD723044DFA00C515DE /* RCTConvert+STPCardFundingType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "RCTConvert+STPCardFundingType.h"; sourceTree = "<group>"; };
+		95BAEFD823044DFA00C515DE /* RCTConvert+STPPaymentMethodCard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "RCTConvert+STPPaymentMethodCard.h"; sourceTree = "<group>"; };
+		95BAEFD923044DFA00C515DE /* STPAPIClient+ApplePayWithPaymentMethod.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "STPAPIClient+ApplePayWithPaymentMethod.m"; sourceTree = "<group>"; };
+		95BAEFDA23044DFA00C515DE /* RCTConvert+STPBankAccountStatus.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "RCTConvert+STPBankAccountStatus.h"; sourceTree = "<group>"; };
 		B81C8CDC1F978E320021EB09 /* TPSError.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TPSError.h; sourceTree = "<group>"; };
 		B81C8CDD1F978E320021EB09 /* TPSError.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TPSError.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -91,6 +118,24 @@
 				3A4EF3271DC8FD4600A7C0BD /* TPSCardField.m */,
 				B81C8CDC1F978E320021EB09 /* TPSError.h */,
 				B81C8CDD1F978E320021EB09 /* TPSError.m */,
+				95BAEFCE23044DF900C515DE /* RCTConvert+STPBankAccountHolderType.h */,
+				95BAEFD523044DF900C515DE /* RCTConvert+STPBankAccountHolderType.m */,
+				95BAEFDA23044DFA00C515DE /* RCTConvert+STPBankAccountStatus.h */,
+				95BAEFCF23044DF900C515DE /* RCTConvert+STPBankAccountStatus.m */,
+				95BAEFD623044DF900C515DE /* RCTConvert+STPCard.h */,
+				95BAEFD323044DF900C515DE /* RCTConvert+STPCard.m */,
+				95BAEFD223044DF900C515DE /* RCTConvert+STPCardBrand.h */,
+				95BAEFCA23044DF900C515DE /* RCTConvert+STPCardBrand.m */,
+				95BAEFD723044DFA00C515DE /* RCTConvert+STPCardFundingType.h */,
+				95BAEFCC23044DF900C515DE /* RCTConvert+STPCardFundingType.m */,
+				95BAEFC923044DF900C515DE /* RCTConvert+STPPaymentMethod.h */,
+				95BAEFCB23044DF900C515DE /* RCTConvert+STPPaymentMethod.m */,
+				95BAEFD823044DFA00C515DE /* RCTConvert+STPPaymentMethodCard.h */,
+				95BAEFCD23044DF900C515DE /* RCTConvert+STPPaymentMethodCard.m */,
+				95BAEFD023044DF900C515DE /* RCTConvert+STPToken.h */,
+				95BAEFD123044DF900C515DE /* RCTConvert+STPToken.m */,
+				95BAEFD423044DF900C515DE /* STPAPIClient+ApplePayWithPaymentMethod.h */,
+				95BAEFD923044DFA00C515DE /* STPAPIClient+ApplePayWithPaymentMethod.m */,
 			);
 			path = TPSStripe;
 			sourceTree = "<group>";
@@ -135,6 +180,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 			);
 			mainGroup = 3A3A7F111DC27B520030F9DC;
@@ -153,9 +199,18 @@
 			buildActionMask = 2147483647;
 			files = (
 				3A4EF3251DC8F90100A7C0BD /* TPSCardFieldManager.m in Sources */,
+				95BAEFDC23044DFA00C515DE /* RCTConvert+STPPaymentMethod.m in Sources */,
 				3A1FF6F81DC3857F00A43A04 /* TPSStripeManager.m in Sources */,
+				95BAEFDF23044DFA00C515DE /* RCTConvert+STPBankAccountStatus.m in Sources */,
+				95BAEFDE23044DFA00C515DE /* RCTConvert+STPPaymentMethodCard.m in Sources */,
 				B81C8CDE1F978E320021EB09 /* TPSError.m in Sources */,
+				95BAEFE123044DFA00C515DE /* RCTConvert+STPCard.m in Sources */,
+				95BAEFDD23044DFA00C515DE /* RCTConvert+STPCardFundingType.m in Sources */,
 				3A4EF3281DC8FD4600A7C0BD /* TPSCardField.m in Sources */,
+				95BAEFE223044DFA00C515DE /* RCTConvert+STPBankAccountHolderType.m in Sources */,
+				95BAEFDB23044DFA00C515DE /* RCTConvert+STPCardBrand.m in Sources */,
+				95BAEFE023044DFA00C515DE /* RCTConvert+STPToken.m in Sources */,
+				95BAEFE323044DFA00C515DE /* STPAPIClient+ApplePayWithPaymentMethod.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
