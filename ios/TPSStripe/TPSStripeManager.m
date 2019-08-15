@@ -43,6 +43,202 @@ NSString * const TPSPaymentNetworkDiscover = @"discover";
 NSString * const TPSPaymentNetworkMasterCard = @"master_card";
 NSString * const TPSPaymentNetworkVisa = @"visa";
 
+@implementation RCTConvert (PKContact)
+
++ (NSDictionary *)PKContactDictionary:(PKContact*)inputContact {
+    NSMutableDictionary *contactDetails = [[NSMutableDictionary alloc] init];
+    
+    if (inputContact.name) {
+        [contactDetails setValue:[NSPersonNameComponentsFormatter localizedStringFromPersonNameComponents:inputContact.name style:NSPersonNameComponentsFormatterStyleDefault options:0] forKey:@"name"];
+    }
+    
+    if (inputContact.phoneNumber) {
+        [contactDetails setValue:[inputContact.phoneNumber stringValue] forKey:@"phoneNumber"];
+    }
+    
+    if (inputContact.emailAddress) {
+        [contactDetails setValue:inputContact.emailAddress forKey:@"emailAddress"];
+    }
+    
+    if (inputContact.supplementarySubLocality) {
+        [contactDetails setValue:inputContact.supplementarySubLocality forKey:@"supplementarySubLocality"];
+    }
+    
+    for (NSString *elem in @[@"street", @"city", @"state", @"country", @"ISOCountryCode", @"postalCode"]) {
+        if ([inputContact.postalAddress respondsToSelector:NSSelectorFromString(elem)]) {
+            [contactDetails setValue:[inputContact.postalAddress valueForKey:elem] forKey:elem];
+        }
+    }
+    if ([contactDetails count] == 0) {
+        return nil;
+    }
+    
+    return contactDetails;
+}
+
+@end
+
+@implementation RCTConvert (PKShippingMethod)
+
++ (NSDictionary *)PKShippingMethodDictionary:(PKShippingMethod*)inputShipping {
+    NSMutableDictionary *shippingDetails = [[NSMutableDictionary alloc] init];
+    
+    if (inputShipping.label) {
+        [shippingDetails setValue:inputShipping.label forKey:@"label"];
+    }
+    
+    if (inputShipping.amount) {
+        NSNumberFormatter* numberFormatter = [NSNumberFormatter new];
+        [numberFormatter setPositiveFormat:@"$0.00"];
+        [shippingDetails setValue:[numberFormatter stringFromNumber: inputShipping.amount] forKey:@"amount"];
+    }
+    
+    if (inputShipping.detail) {
+        [shippingDetails setValue:inputShipping.detail forKey:@"detail"];
+    }
+    
+    if (inputShipping.identifier) {
+        [shippingDetails setValue:inputShipping.identifier forKey:@"id"];
+    }
+    
+    if ([shippingDetails count] == 0) {
+        return nil;
+    }
+    
+    return shippingDetails;
+}
+
+@end
+
+@implementation RCTConvert (PKPaymentNetwork)
+
++ (PKPaymentNetwork)PKPaymentNetwork:(NSString *)paymentNetworkString {
+    if ([paymentNetworkString isEqualToString:TPSPaymentNetworkAmex]) {
+        return PKPaymentNetworkAmex;
+    }
+    if ([paymentNetworkString isEqualToString:TPSPaymentNetworkDiscover]) {
+        return PKPaymentNetworkDiscover;
+    }
+    if ([paymentNetworkString isEqualToString:TPSPaymentNetworkMasterCard]) {
+        return PKPaymentNetworkMasterCard;
+    }
+    if ([paymentNetworkString isEqualToString:TPSPaymentNetworkVisa]) {
+        return PKPaymentNetworkVisa;
+    }
+    
+    return nil;
+}
+
+@end
+
+@implementation RCTConvert (PKAddressField)
+
++ (PKAddressField)PKAddressField:(NSString *)addressFieldString {
+    PKAddressField addressField = PKAddressFieldNone;
+    if ([addressFieldString isEqualToString:@"postal_address"]) {
+        addressField = PKAddressFieldPostalAddress;
+    }
+    if ([addressFieldString isEqualToString:@"phone"]) {
+        addressField = PKAddressFieldPhone;
+    }
+    if ([addressFieldString isEqualToString:@"email"]) {
+        addressField = PKAddressFieldEmail;
+    }
+    if ([addressFieldString isEqualToString:@"name"]) {
+        addressField = PKAddressFieldName;
+    }
+    if ([addressFieldString isEqualToString:@"all"]) {
+        addressField = PKAddressFieldAll;
+    }
+    return addressField;
+}
+
+@end
+
+@implementation RCTConvert (STPBillingAddressFields)
+
++ (STPBillingAddressFields)STPBillingAddressFields:(NSString*)inputType {
+    if ([inputType isEqualToString:@"zip"]) {
+        return STPBillingAddressFieldsZip;
+    }
+    if ([inputType isEqualToString:@"full"]) {
+        return STPBillingAddressFieldsFull;
+    }
+    return STPBillingAddressFieldsNone;
+}
+
+@end
+
+@implementation RCTConvert (STPAddress)
+
++ (STPAddress *)STPAddress:(NSDictionary*)inputAddress {
+    STPAddress *address = [[STPAddress alloc] init];
+    
+    [address setName:inputAddress[@"name"]];
+    [address setLine1:inputAddress[@"line1"]];
+    [address setLine2:inputAddress[@"line2"]];
+    [address setCity:inputAddress[@"city"]];
+    [address setState:inputAddress[@"state"]];
+    [address setPostalCode:inputAddress[@"postalCode"]];
+    [address setCountry:inputAddress[@"country"]];
+    [address setPhone:inputAddress[@"phone"]];
+    [address setEmail:inputAddress[@"email"]];
+    
+    return address;
+}
+@end
+
+@implementation RCTConvert (STPUserInformation)
+
++ (STPUserInformation *)STPUserInformation:(NSDictionary*)inputInformation {
+    STPUserInformation *userInformation = [[STPUserInformation alloc] init];
+    
+    [userInformation setBillingAddress: [RCTConvert STPAddress:inputInformation[@"billingAddress"]]];
+    [userInformation setShippingAddress: [RCTConvert STPAddress:inputInformation[@"shippingAddress"]]];
+    
+    return userInformation;
+}
+
+@end
+
+@implementation RCTConvert (STPTheme)
+
++ (STPTheme *)STPTheme:(NSDictionary*)options {
+    STPTheme *theme = [[STPTheme alloc] init];
+    
+    [theme setPrimaryBackgroundColor:[RCTConvert UIColor:options[@"primaryBackgroundColor"]]];
+    [theme setSecondaryBackgroundColor:[RCTConvert UIColor:options[@"secondaryBackgroundColor"]]];
+    [theme setPrimaryForegroundColor:[RCTConvert UIColor:options[@"primaryForegroundColor"]]];
+    [theme setSecondaryForegroundColor:[RCTConvert UIColor:options[@"secondaryForegroundColor"]]];
+    [theme setAccentColor:[RCTConvert UIColor:options[@"accentColor"]]];
+    [theme setErrorColor:[RCTConvert UIColor:options[@"errorColor"]]];
+    [theme setErrorColor:[RCTConvert UIColor:options[@"errorColor"]]];
+    // TODO: process font vars
+    
+    return theme;
+}
+@end
+
+@implementation RCTConvert (PKShippingType)
+
++ (PKShippingType)PKShippingType:(NSString*)inputType {
+    PKShippingType shippingType = PKShippingTypeShipping;
+    if ([inputType isEqualToString:@"delivery"]) {
+        shippingType = PKShippingTypeDelivery;
+    }
+    if ([inputType isEqualToString:@"store_pickup"]) {
+        shippingType = PKShippingTypeStorePickup;
+    }
+    if ([inputType isEqualToString:@"service_pickup"]) {
+        shippingType = PKShippingTypeServicePickup;
+    }
+    
+    return shippingType;
+}
+
+@end
+
+
 @implementation StripeModule
 {
     NSString *publishableKey;
@@ -71,12 +267,10 @@ NSString * const TPSPaymentNetworkVisa = @"visa";
 
 - (NSDictionary *)constantsToExport
 {
-    return @{
-             @"TPSErrorDomain": TPSErrorDomain,
+    return @{@"TPSErrorDomain": TPSErrorDomain,
              @"TPSErrorCodeApplePayNotConfigured": [@(TPSErrorCodeApplePayNotConfigured) stringValue],
              @"TPSErrorCodePreviousRequestNotCompleted": [@(TPSErrorCodePreviousRequestNotCompleted) stringValue],
-             @"TPSErrorCodeUserCancel": [@(TPSErrorCodeUserCancel) stringValue],
-             };
+             @"TPSErrorCodeUserCancel": [@(TPSErrorCodeUserCancel) stringValue]};
 }
 
 RCT_EXPORT_MODULE();
@@ -306,13 +500,13 @@ RCT_EXPORT_METHOD(paymentRequestWithCardForm:(NSDictionary *)options
     promiseResolver = resolve;
     promiseRejector = reject;
 
-    NSUInteger requiredBillingAddressFields = [self billingType:options[@"requiredBillingAddressFields"]];
+    STPBillingAddressFields requiredBillingAddressFields = [RCTConvert STPBillingAddressFields:options[@"requiredBillingAddressFields"]];
     NSString *companyName = options[@"companyName"] ? options[@"companyName"] : @"";
-    STPUserInformation *prefilledInformation = [self userInformation:options[@"prefilledInformation"]];
+    STPUserInformation *prefilledInformation = [RCTConvert STPUserInformation:options[@"prefilledInformation"]];
     NSString *managedAccountCurrency = options[@"managedAccountCurrency"];
     NSString *nextPublishableKey = options[@"publishableKey"] ? options[@"publishableKey"] : publishableKey;
     UIModalPresentationStyle formPresentation = [self formPresentation:options[@"presentation"]];
-    STPTheme *theme = [self formTheme:options[@"theme"]];
+    STPTheme *theme = [RCTConvert STPTheme:options[@"theme"]];
 
     STPPaymentConfiguration *configuration = [[STPPaymentConfiguration alloc] init];
     [configuration setRequiredBillingAddressFields:requiredBillingAddressFields];
@@ -353,7 +547,7 @@ RCT_EXPORT_METHOD(paymentRequestWithApplePay:(NSArray *)items
 
     NSUInteger requiredShippingAddressFields = [self applePayAddressFields:options[@"requiredShippingAddressFields"]];
     NSUInteger requiredBillingAddressFields = [self applePayAddressFields:options[@"requiredBillingAddressFields"]];
-    PKShippingType shippingType = [self applePayShippingType:options[@"shippingType"]];
+    PKShippingType shippingType = [RCTConvert PKShippingType:options[@"shippingType"]];
     NSMutableArray *shippingMethodsItems = options[@"shippingMethods"] ? options[@"shippingMethods"] : [NSMutableArray array];
     NSString* currencyCode = options[@"currencyCode"] ? options[@"currencyCode"] : @"USD";
     NSString* countryCode = options[@"countryCode"] ? options[@"countryCode"] : @"US";
@@ -523,9 +717,9 @@ RCT_EXPORT_METHOD(openApplePaySetup) {
         } else {
             NSDictionary *result = [RCTConvert STPPaymentMethodDictionary:paymentMethod];
             NSDictionary *extra = @{
-                @"billingContact": [self contactDetails:payment.billingContact] ?: [NSNull null],
-                @"shippingContact": [self contactDetails:payment.shippingContact] ?: [NSNull null],
-                @"shippingMethod": [self shippingDetails:payment.shippingMethod] ?: [NSNull null]
+                @"billingContact": [RCTConvert PKContactDictionary:payment.billingContact] ?: [NSNull null],
+                @"shippingContact": [RCTConvert PKContactDictionary:payment.shippingContact] ?: [NSNull null],
+                @"shippingMethod": [RCTConvert PKShippingMethodDictionary:payment.shippingMethod] ?: [NSNull null]
             };
 
             [result setValue:extra forKey:@"extra"];
@@ -562,156 +756,14 @@ RCT_EXPORT_METHOD(openApplePaySetup) {
     return [[STPAPIClient alloc] initWithPublishableKey:[Stripe defaultPublishableKey]];
 }
 
-- (NSDictionary *)contactDetails:(PKContact*)inputContact {
-    NSMutableDictionary *contactDetails = [[NSMutableDictionary alloc] init];
-
-    if (inputContact.name) {
-        [contactDetails setValue:[NSPersonNameComponentsFormatter localizedStringFromPersonNameComponents:inputContact.name style:NSPersonNameComponentsFormatterStyleDefault options:0] forKey:@"name"];
-    }
-
-    if (inputContact.phoneNumber) {
-        [contactDetails setValue:[inputContact.phoneNumber stringValue] forKey:@"phoneNumber"];
-    }
-
-    if (inputContact.emailAddress) {
-        [contactDetails setValue:inputContact.emailAddress forKey:@"emailAddress"];
-    }
-
-    if (inputContact.supplementarySubLocality) {
-        [contactDetails setValue:inputContact.supplementarySubLocality forKey:@"supplementarySubLocality"];
-    }
-
-    for (NSString *elem in @[@"street", @"city", @"state", @"country", @"ISOCountryCode", @"postalCode"]) {
-        if ([inputContact.postalAddress respondsToSelector:NSSelectorFromString(elem)]) {
-            [contactDetails setValue:[inputContact.postalAddress valueForKey:elem] forKey:elem];
-        }
-    }
-    if ([contactDetails count] == 0) {
-        return nil;
-    }
-
-    return contactDetails;
-}
-
-- (NSDictionary *)shippingDetails:(PKShippingMethod*)inputShipping {
-    NSMutableDictionary *shippingDetails = [[NSMutableDictionary alloc] init];
-
-    if (inputShipping.label) {
-        [shippingDetails setValue:inputShipping.label forKey:@"label"];
-    }
-
-    if (inputShipping.amount) {
-        [shippingDetails setValue:[[self numberFormatter] stringFromNumber: inputShipping.amount] forKey:@"amount"];
-    }
-
-    if (inputShipping.detail) {
-        [shippingDetails setValue:inputShipping.detail forKey:@"detail"];
-    }
-
-    if (inputShipping.identifier) {
-        [shippingDetails setValue:inputShipping.identifier forKey:@"id"];
-    }
-
-    if ([shippingDetails count] == 0) {
-        return nil;
-    }
-
-    return shippingDetails;
-}
-
 - (PKAddressField)applePayAddressFields:(NSArray <NSString *> *)addressFieldStrings {
     PKAddressField addressField = PKAddressFieldNone;
 
     for (NSString *addressFieldString in addressFieldStrings) {
-        addressField |= [self applePayAddressField:addressFieldString];
+        addressField |= [RCTConvert PKAddressField:addressFieldString];
     }
 
     return addressField;
-}
-
-- (PKAddressField)applePayAddressField:(NSString *)addressFieldString {
-    PKAddressField addressField = PKAddressFieldNone;
-    if ([addressFieldString isEqualToString:@"postal_address"]) {
-        addressField = PKAddressFieldPostalAddress;
-    }
-    if ([addressFieldString isEqualToString:@"phone"]) {
-        addressField = PKAddressFieldPhone;
-    }
-    if ([addressFieldString isEqualToString:@"email"]) {
-        addressField = PKAddressFieldEmail;
-    }
-    if ([addressFieldString isEqualToString:@"name"]) {
-        addressField = PKAddressFieldName;
-    }
-    if ([addressFieldString isEqualToString:@"all"]) {
-        addressField = PKAddressFieldAll;
-    }
-    return addressField;
-}
-
-- (PKShippingType)applePayShippingType:(NSString*)inputType {
-    PKShippingType shippingType = PKShippingTypeShipping;
-    if ([inputType isEqualToString:@"delivery"]) {
-        shippingType = PKShippingTypeDelivery;
-    }
-    if ([inputType isEqualToString:@"store_pickup"]) {
-        shippingType = PKShippingTypeStorePickup;
-    }
-    if ([inputType isEqualToString:@"service_pickup"]) {
-        shippingType = PKShippingTypeServicePickup;
-    }
-
-    return shippingType;
-}
-
-- (STPBillingAddressFields)billingType:(NSString*)inputType {
-    if ([inputType isEqualToString:@"zip"]) {
-        return STPBillingAddressFieldsZip;
-    }
-    if ([inputType isEqualToString:@"full"]) {
-        return STPBillingAddressFieldsFull;
-    }
-    return STPBillingAddressFieldsNone;
-}
-
-- (STPUserInformation *)userInformation:(NSDictionary*)inputInformation {
-    STPUserInformation *userInformation = [[STPUserInformation alloc] init];
-
-    [userInformation setBillingAddress: [self address:inputInformation[@"billingAddress"]]];
-    [userInformation setShippingAddress: [self address:inputInformation[@"shippingAddress"]]];
-
-    return userInformation;
-}
-
-- (STPAddress *)address:(NSDictionary*)inputAddress {
-    STPAddress *address = [[STPAddress alloc] init];
-
-    [address setName:inputAddress[@"name"]];
-    [address setLine1:inputAddress[@"line1"]];
-    [address setLine2:inputAddress[@"line2"]];
-    [address setCity:inputAddress[@"city"]];
-    [address setState:inputAddress[@"state"]];
-    [address setPostalCode:inputAddress[@"postalCode"]];
-    [address setCountry:inputAddress[@"country"]];
-    [address setPhone:inputAddress[@"phone"]];
-    [address setEmail:inputAddress[@"email"]];
-
-    return address;
-}
-
-- (STPTheme *)formTheme:(NSDictionary*)options {
-    STPTheme *theme = [[STPTheme alloc] init];
-
-    [theme setPrimaryBackgroundColor:[RCTConvert UIColor:options[@"primaryBackgroundColor"]]];
-    [theme setSecondaryBackgroundColor:[RCTConvert UIColor:options[@"secondaryBackgroundColor"]]];
-    [theme setPrimaryForegroundColor:[RCTConvert UIColor:options[@"primaryForegroundColor"]]];
-    [theme setSecondaryForegroundColor:[RCTConvert UIColor:options[@"secondaryForegroundColor"]]];
-    [theme setAccentColor:[RCTConvert UIColor:options[@"accentColor"]]];
-    [theme setErrorColor:[RCTConvert UIColor:options[@"errorColor"]]];
-    [theme setErrorColor:[RCTConvert UIColor:options[@"errorColor"]]];
-    // TODO: process font vars
-
-    return theme;
 }
 
 - (UIModalPresentationStyle)formPresentation:(NSString*)inputType {
@@ -724,63 +776,23 @@ RCT_EXPORT_METHOD(openApplePaySetup) {
 }
 
 + (NSArray <NSString *> *)supportedPaymentNetworksStrings {
-    return @[
-                TPSPaymentNetworkAmex,
-                TPSPaymentNetworkDiscover,
-                TPSPaymentNetworkMasterCard,
-                TPSPaymentNetworkVisa,
-                ];
+    return @[TPSPaymentNetworkAmex,
+             TPSPaymentNetworkDiscover,
+             TPSPaymentNetworkMasterCard,
+             TPSPaymentNetworkVisa];
 }
 
 - (NSArray <PKPaymentNetwork> *)paymentNetworks:(NSArray <NSString *> *)paymentNetworkStrings {
     NSMutableArray <PKPaymentNetwork> *results = [@[] mutableCopy];
 
     for (NSString *paymentNetworkString in paymentNetworkStrings) {
-        PKPaymentNetwork paymentNetwork = [self paymentNetwork:paymentNetworkString];
+        PKPaymentNetwork paymentNetwork = [RCTConvert PKPaymentNetwork:paymentNetworkString];
         if (paymentNetwork) {
             [results addObject:paymentNetwork];
         }
     }
 
     return [results copy];
-}
-
-- (PKPaymentNetwork)paymentNetwork:(NSString *)paymentNetworkString {
-    static NSDictionary *paymentNetworksMap;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        NSMutableDictionary *mutableMap = [@{} mutableCopy];
-
-        if ((&PKPaymentNetworkAmex) != NULL) {
-            mutableMap[TPSPaymentNetworkAmex] = PKPaymentNetworkAmex;
-        }
-
-        if ((&PKPaymentNetworkDiscover) != NULL) {
-            mutableMap[TPSPaymentNetworkDiscover] = PKPaymentNetworkDiscover;
-        }
-
-        if ((&PKPaymentNetworkMasterCard) != NULL) {
-            mutableMap[TPSPaymentNetworkMasterCard] = PKPaymentNetworkMasterCard;
-        }
-
-        if ((&PKPaymentNetworkVisa) != NULL) {
-            mutableMap[TPSPaymentNetworkVisa] = PKPaymentNetworkVisa;
-        }
-
-        paymentNetworksMap = [mutableMap copy];
-    });
-
-    return paymentNetworksMap[paymentNetworkString];
-}
-
-- (NSNumberFormatter *)numberFormatter {
-    static NSNumberFormatter *kSharedFormatter;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        kSharedFormatter = [[NSNumberFormatter alloc] init];
-        [kSharedFormatter setPositiveFormat:@"$0.00"];
-    });
-    return kSharedFormatter;
 }
 
 + (BOOL)requiresMainQueueSetup

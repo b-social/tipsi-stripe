@@ -24,6 +24,10 @@
 		95AFA0282305870E00FC2D1A /* RCTConvert+STPSourceType.m in Sources */ = {isa = PBXBuildFile; fileRef = 95AFA0272305870E00FC2D1A /* RCTConvert+STPSourceType.m */; };
 		95AFA02B2305872A00FC2D1A /* RCTConvert+STPSourceUsage.m in Sources */ = {isa = PBXBuildFile; fileRef = 95AFA02A2305872A00FC2D1A /* RCTConvert+STPSourceUsage.m */; };
 		95AFA02E2305875B00FC2D1A /* RCTConvert+STPSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 95AFA02D2305875B00FC2D1A /* RCTConvert+STPSource.m */; };
+		95AFA0352305C06800FC2D1A /* RCTConvert+STPTheme.m in Sources */ = {isa = PBXBuildFile; fileRef = 95AFA0342305C06800FC2D1A /* RCTConvert+STPTheme.m */; };
+		95AFA0382305C07D00FC2D1A /* RCTConvert+STPAddress.m in Sources */ = {isa = PBXBuildFile; fileRef = 95AFA0372305C07D00FC2D1A /* RCTConvert+STPAddress.m */; };
+		95AFA03B2305C08E00FC2D1A /* RCTConvert+STPUserInformation.m in Sources */ = {isa = PBXBuildFile; fileRef = 95AFA03A2305C08E00FC2D1A /* RCTConvert+STPUserInformation.m */; };
+		95AFA03E2305C0AC00FC2D1A /* RCTConvert+STPBillingAddressFields.m in Sources */ = {isa = PBXBuildFile; fileRef = 95AFA03D2305C0AC00FC2D1A /* RCTConvert+STPBillingAddressFields.m */; };
 		95BAEFDB23044DFA00C515DE /* RCTConvert+STPCardBrand.m in Sources */ = {isa = PBXBuildFile; fileRef = 95BAEFCA23044DF900C515DE /* RCTConvert+STPCardBrand.m */; };
 		95BAEFDC23044DFA00C515DE /* RCTConvert+STPPaymentMethod.m in Sources */ = {isa = PBXBuildFile; fileRef = 95BAEFCB23044DF900C515DE /* RCTConvert+STPPaymentMethod.m */; };
 		95BAEFDD23044DFA00C515DE /* RCTConvert+STPCardFundingType.m in Sources */ = {isa = PBXBuildFile; fileRef = 95BAEFCC23044DF900C515DE /* RCTConvert+STPCardFundingType.m */; };
@@ -82,6 +86,14 @@
 		95AFA02A2305872A00FC2D1A /* RCTConvert+STPSourceUsage.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "RCTConvert+STPSourceUsage.m"; sourceTree = "<group>"; };
 		95AFA02C2305875100FC2D1A /* RCTConvert+STPSource.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "RCTConvert+STPSource.h"; sourceTree = "<group>"; };
 		95AFA02D2305875B00FC2D1A /* RCTConvert+STPSource.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "RCTConvert+STPSource.m"; sourceTree = "<group>"; };
+		95AFA0332305C06100FC2D1A /* RCTConvert+STPTheme.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "RCTConvert+STPTheme.h"; sourceTree = "<group>"; };
+		95AFA0342305C06800FC2D1A /* RCTConvert+STPTheme.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "RCTConvert+STPTheme.m"; sourceTree = "<group>"; };
+		95AFA0362305C07700FC2D1A /* RCTConvert+STPAddress.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "RCTConvert+STPAddress.h"; sourceTree = "<group>"; };
+		95AFA0372305C07D00FC2D1A /* RCTConvert+STPAddress.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "RCTConvert+STPAddress.m"; sourceTree = "<group>"; };
+		95AFA0392305C08900FC2D1A /* RCTConvert+STPUserInformation.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "RCTConvert+STPUserInformation.h"; sourceTree = "<group>"; };
+		95AFA03A2305C08E00FC2D1A /* RCTConvert+STPUserInformation.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "RCTConvert+STPUserInformation.m"; sourceTree = "<group>"; };
+		95AFA03C2305C0A100FC2D1A /* RCTConvert+STPBillingAddressFields .h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "RCTConvert+STPBillingAddressFields .h"; sourceTree = "<group>"; };
+		95AFA03D2305C0AC00FC2D1A /* RCTConvert+STPBillingAddressFields.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "RCTConvert+STPBillingAddressFields.m"; sourceTree = "<group>"; };
 		95BAEFC923044DF900C515DE /* RCTConvert+STPPaymentMethod.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "RCTConvert+STPPaymentMethod.h"; sourceTree = "<group>"; };
 		95BAEFCA23044DF900C515DE /* RCTConvert+STPCardBrand.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "RCTConvert+STPCardBrand.m"; sourceTree = "<group>"; };
 		95BAEFCB23044DF900C515DE /* RCTConvert+STPPaymentMethod.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "RCTConvert+STPPaymentMethod.m"; sourceTree = "<group>"; };
@@ -150,6 +162,14 @@
 				3A1FF6F71DC3857F00A43A04 /* TPSStripeManager.m */,
 				3A4EF3231DC8F90100A7C0BD /* TPSCardFieldManager.h */,
 				3A4EF3241DC8F90100A7C0BD /* TPSCardFieldManager.m */,
+				95AFA0332305C06100FC2D1A /* RCTConvert+STPTheme.h */,
+				95AFA0342305C06800FC2D1A /* RCTConvert+STPTheme.m */,
+				95AFA0362305C07700FC2D1A /* RCTConvert+STPAddress.h */,
+				95AFA0372305C07D00FC2D1A /* RCTConvert+STPAddress.m */,
+				95AFA0392305C08900FC2D1A /* RCTConvert+STPUserInformation.h */,
+				95AFA03A2305C08E00FC2D1A /* RCTConvert+STPUserInformation.m */,
+				95AFA03C2305C0A100FC2D1A /* RCTConvert+STPBillingAddressFields .h */,
+				95AFA03D2305C0AC00FC2D1A /* RCTConvert+STPBillingAddressFields.m */,
 				3A4EF3261DC8FD4600A7C0BD /* TPSCardField.h */,
 				3A4EF3271DC8FD4600A7C0BD /* TPSCardField.m */,
 				B81C8CDC1F978E320021EB09 /* TPSError.h */,
@@ -268,6 +288,8 @@
 				95AFA0162305866500FC2D1A /* RCTConvert+STPSourceFlow.m in Sources */,
 				95AFA01C230586A300FC2D1A /* RCTConvert+STPSourceVerificationStatus.m in Sources */,
 				95BAEFDE23044DFA00C515DE /* RCTConvert+STPPaymentMethodCard.m in Sources */,
+				95AFA0382305C07D00FC2D1A /* RCTConvert+STPAddress.m in Sources */,
+				95AFA03B2305C08E00FC2D1A /* RCTConvert+STPUserInformation.m in Sources */,
 				95AFA02E2305875B00FC2D1A /* RCTConvert+STPSource.m in Sources */,
 				B81C8CDE1F978E320021EB09 /* TPSError.m in Sources */,
 				95BAEFE123044DFA00C515DE /* RCTConvert+STPCard.m in Sources */,
@@ -281,8 +303,10 @@
 				95BAEFE223044DFA00C515DE /* RCTConvert+STPBankAccountHolderType.m in Sources */,
 				95BAEFDB23044DFA00C515DE /* RCTConvert+STPCardBrand.m in Sources */,
 				95BAEFE023044DFA00C515DE /* RCTConvert+STPToken.m in Sources */,
+				95AFA0352305C06800FC2D1A /* RCTConvert+STPTheme.m in Sources */,
 				95BAEFE323044DFA00C515DE /* STPAPIClient+ApplePayWithPaymentMethod.m in Sources */,
 				95AFA022230586D500FC2D1A /* RCTConvert+STPSourceCardDetails.m in Sources */,
+				95AFA03E2305C0AC00FC2D1A /* RCTConvert+STPBillingAddressFields.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
