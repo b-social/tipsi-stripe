@@ -12,6 +12,18 @@
 		3A4EF3251DC8F90100A7C0BD /* TPSCardFieldManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A4EF3241DC8F90100A7C0BD /* TPSCardFieldManager.m */; };
 		3A4EF3281DC8FD4600A7C0BD /* TPSCardField.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A4EF3271DC8FD4600A7C0BD /* TPSCardField.m */; };
 		3C0CB3831E6D765D00CF5D16 /* Stripe.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C0CB3821E6D765D00CF5D16 /* Stripe.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		95AFA00D2305851700FC2D1A /* RCTConvert+STPCardParams.m in Sources */ = {isa = PBXBuildFile; fileRef = 95AFA00C2305851700FC2D1A /* RCTConvert+STPCardParams.m */; };
+		95AFA0102305860B00FC2D1A /* RCTConvert+STPSourceParams.m in Sources */ = {isa = PBXBuildFile; fileRef = 95AFA00F2305860B00FC2D1A /* RCTConvert+STPSourceParams.m */; };
+		95AFA0132305864500FC2D1A /* RCTConvert+STPPaymentMethodCardParams.m in Sources */ = {isa = PBXBuildFile; fileRef = 95AFA0122305864500FC2D1A /* RCTConvert+STPPaymentMethodCardParams.m */; };
+		95AFA0162305866500FC2D1A /* RCTConvert+STPSourceFlow.m in Sources */ = {isa = PBXBuildFile; fileRef = 95AFA0152305866500FC2D1A /* RCTConvert+STPSourceFlow.m */; };
+		95AFA0192305867F00FC2D1A /* RCTConvert+STPSourceRedirectStatus.m in Sources */ = {isa = PBXBuildFile; fileRef = 95AFA0182305867F00FC2D1A /* RCTConvert+STPSourceRedirectStatus.m */; };
+		95AFA01C230586A300FC2D1A /* RCTConvert+STPSourceVerificationStatus.m in Sources */ = {isa = PBXBuildFile; fileRef = 95AFA01B230586A300FC2D1A /* RCTConvert+STPSourceVerificationStatus.m */; };
+		95AFA01F230586BF00FC2D1A /* RCTConvert+STPSourceCard3DSecureStatus.m in Sources */ = {isa = PBXBuildFile; fileRef = 95AFA01E230586BF00FC2D1A /* RCTConvert+STPSourceCard3DSecureStatus.m */; };
+		95AFA022230586D500FC2D1A /* RCTConvert+STPSourceCardDetails.m in Sources */ = {isa = PBXBuildFile; fileRef = 95AFA021230586D500FC2D1A /* RCTConvert+STPSourceCardDetails.m */; };
+		95AFA025230586EE00FC2D1A /* RCTConvert+STPSourceStatus.m in Sources */ = {isa = PBXBuildFile; fileRef = 95AFA024230586EE00FC2D1A /* RCTConvert+STPSourceStatus.m */; };
+		95AFA0282305870E00FC2D1A /* RCTConvert+STPSourceType.m in Sources */ = {isa = PBXBuildFile; fileRef = 95AFA0272305870E00FC2D1A /* RCTConvert+STPSourceType.m */; };
+		95AFA02B2305872A00FC2D1A /* RCTConvert+STPSourceUsage.m in Sources */ = {isa = PBXBuildFile; fileRef = 95AFA02A2305872A00FC2D1A /* RCTConvert+STPSourceUsage.m */; };
+		95AFA02E2305875B00FC2D1A /* RCTConvert+STPSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 95AFA02D2305875B00FC2D1A /* RCTConvert+STPSource.m */; };
 		95BAEFDB23044DFA00C515DE /* RCTConvert+STPCardBrand.m in Sources */ = {isa = PBXBuildFile; fileRef = 95BAEFCA23044DF900C515DE /* RCTConvert+STPCardBrand.m */; };
 		95BAEFDC23044DFA00C515DE /* RCTConvert+STPPaymentMethod.m in Sources */ = {isa = PBXBuildFile; fileRef = 95BAEFCB23044DF900C515DE /* RCTConvert+STPPaymentMethod.m */; };
 		95BAEFDD23044DFA00C515DE /* RCTConvert+STPCardFundingType.m in Sources */ = {isa = PBXBuildFile; fileRef = 95BAEFCC23044DF900C515DE /* RCTConvert+STPCardFundingType.m */; };
@@ -46,6 +58,30 @@
 		3A4EF3261DC8FD4600A7C0BD /* TPSCardField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TPSCardField.h; sourceTree = "<group>"; };
 		3A4EF3271DC8FD4600A7C0BD /* TPSCardField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TPSCardField.m; sourceTree = "<group>"; };
 		3C0CB3821E6D765D00CF5D16 /* Stripe.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Stripe.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		95AFA00B2305850400FC2D1A /* RCTConvert+STPCardParams.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "RCTConvert+STPCardParams.h"; sourceTree = "<group>"; };
+		95AFA00C2305851700FC2D1A /* RCTConvert+STPCardParams.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "RCTConvert+STPCardParams.m"; sourceTree = "<group>"; };
+		95AFA00E230585FD00FC2D1A /* RCTConvert+STPSourceParams.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "RCTConvert+STPSourceParams.h"; sourceTree = "<group>"; };
+		95AFA00F2305860B00FC2D1A /* RCTConvert+STPSourceParams.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "RCTConvert+STPSourceParams.m"; sourceTree = "<group>"; };
+		95AFA0112305863900FC2D1A /* RCTConvert+STPPaymentMethodCardParams.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "RCTConvert+STPPaymentMethodCardParams.h"; sourceTree = "<group>"; };
+		95AFA0122305864500FC2D1A /* RCTConvert+STPPaymentMethodCardParams.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "RCTConvert+STPPaymentMethodCardParams.m"; sourceTree = "<group>"; };
+		95AFA0142305865C00FC2D1A /* RCTConvert+STPSourceFlow.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "RCTConvert+STPSourceFlow.h"; sourceTree = "<group>"; };
+		95AFA0152305866500FC2D1A /* RCTConvert+STPSourceFlow.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "RCTConvert+STPSourceFlow.m"; sourceTree = "<group>"; };
+		95AFA0172305867600FC2D1A /* RCTConvert+STPSourceRedirectStatus.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "RCTConvert+STPSourceRedirectStatus.h"; sourceTree = "<group>"; };
+		95AFA0182305867F00FC2D1A /* RCTConvert+STPSourceRedirectStatus.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "RCTConvert+STPSourceRedirectStatus.m"; sourceTree = "<group>"; };
+		95AFA01A2305869200FC2D1A /* RCTConvert+STPSourceVerificationStatus.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "RCTConvert+STPSourceVerificationStatus.h"; sourceTree = "<group>"; };
+		95AFA01B230586A300FC2D1A /* RCTConvert+STPSourceVerificationStatus.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "RCTConvert+STPSourceVerificationStatus.m"; sourceTree = "<group>"; };
+		95AFA01D230586B500FC2D1A /* RCTConvert+STPSourceCard3DSecureStatus.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "RCTConvert+STPSourceCard3DSecureStatus.h"; sourceTree = "<group>"; };
+		95AFA01E230586BF00FC2D1A /* RCTConvert+STPSourceCard3DSecureStatus.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "RCTConvert+STPSourceCard3DSecureStatus.m"; sourceTree = "<group>"; };
+		95AFA020230586CD00FC2D1A /* RCTConvert+STPSourceCardDetails.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "RCTConvert+STPSourceCardDetails.h"; sourceTree = "<group>"; };
+		95AFA021230586D500FC2D1A /* RCTConvert+STPSourceCardDetails.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "RCTConvert+STPSourceCardDetails.m"; sourceTree = "<group>"; };
+		95AFA023230586E300FC2D1A /* RCTConvert+STPSourceStatus.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "RCTConvert+STPSourceStatus.h"; sourceTree = "<group>"; };
+		95AFA024230586EE00FC2D1A /* RCTConvert+STPSourceStatus.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "RCTConvert+STPSourceStatus.m"; sourceTree = "<group>"; };
+		95AFA026230586FB00FC2D1A /* RCTConvert+STPSourceType.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "RCTConvert+STPSourceType.h"; sourceTree = "<group>"; };
+		95AFA0272305870E00FC2D1A /* RCTConvert+STPSourceType.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "RCTConvert+STPSourceType.m"; sourceTree = "<group>"; };
+		95AFA0292305871C00FC2D1A /* RCTConvert+STPSourceUsage.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "RCTConvert+STPSourceUsage.h"; sourceTree = "<group>"; };
+		95AFA02A2305872A00FC2D1A /* RCTConvert+STPSourceUsage.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "RCTConvert+STPSourceUsage.m"; sourceTree = "<group>"; };
+		95AFA02C2305875100FC2D1A /* RCTConvert+STPSource.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "RCTConvert+STPSource.h"; sourceTree = "<group>"; };
+		95AFA02D2305875B00FC2D1A /* RCTConvert+STPSource.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "RCTConvert+STPSource.m"; sourceTree = "<group>"; };
 		95BAEFC923044DF900C515DE /* RCTConvert+STPPaymentMethod.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "RCTConvert+STPPaymentMethod.h"; sourceTree = "<group>"; };
 		95BAEFCA23044DF900C515DE /* RCTConvert+STPCardBrand.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "RCTConvert+STPCardBrand.m"; sourceTree = "<group>"; };
 		95BAEFCB23044DF900C515DE /* RCTConvert+STPPaymentMethod.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "RCTConvert+STPPaymentMethod.m"; sourceTree = "<group>"; };
@@ -134,6 +170,30 @@
 				95BAEFCD23044DF900C515DE /* RCTConvert+STPPaymentMethodCard.m */,
 				95BAEFD023044DF900C515DE /* RCTConvert+STPToken.h */,
 				95BAEFD123044DF900C515DE /* RCTConvert+STPToken.m */,
+				95AFA00B2305850400FC2D1A /* RCTConvert+STPCardParams.h */,
+				95AFA00C2305851700FC2D1A /* RCTConvert+STPCardParams.m */,
+				95AFA00E230585FD00FC2D1A /* RCTConvert+STPSourceParams.h */,
+				95AFA00F2305860B00FC2D1A /* RCTConvert+STPSourceParams.m */,
+				95AFA02C2305875100FC2D1A /* RCTConvert+STPSource.h */,
+				95AFA02D2305875B00FC2D1A /* RCTConvert+STPSource.m */,
+				95AFA0292305871C00FC2D1A /* RCTConvert+STPSourceUsage.h */,
+				95AFA02A2305872A00FC2D1A /* RCTConvert+STPSourceUsage.m */,
+				95AFA026230586FB00FC2D1A /* RCTConvert+STPSourceType.h */,
+				95AFA0272305870E00FC2D1A /* RCTConvert+STPSourceType.m */,
+				95AFA023230586E300FC2D1A /* RCTConvert+STPSourceStatus.h */,
+				95AFA024230586EE00FC2D1A /* RCTConvert+STPSourceStatus.m */,
+				95AFA020230586CD00FC2D1A /* RCTConvert+STPSourceCardDetails.h */,
+				95AFA021230586D500FC2D1A /* RCTConvert+STPSourceCardDetails.m */,
+				95AFA01D230586B500FC2D1A /* RCTConvert+STPSourceCard3DSecureStatus.h */,
+				95AFA01E230586BF00FC2D1A /* RCTConvert+STPSourceCard3DSecureStatus.m */,
+				95AFA01A2305869200FC2D1A /* RCTConvert+STPSourceVerificationStatus.h */,
+				95AFA01B230586A300FC2D1A /* RCTConvert+STPSourceVerificationStatus.m */,
+				95AFA0172305867600FC2D1A /* RCTConvert+STPSourceRedirectStatus.h */,
+				95AFA0182305867F00FC2D1A /* RCTConvert+STPSourceRedirectStatus.m */,
+				95AFA0142305865C00FC2D1A /* RCTConvert+STPSourceFlow.h */,
+				95AFA0152305866500FC2D1A /* RCTConvert+STPSourceFlow.m */,
+				95AFA0112305863900FC2D1A /* RCTConvert+STPPaymentMethodCardParams.h */,
+				95AFA0122305864500FC2D1A /* RCTConvert+STPPaymentMethodCardParams.m */,
 				95BAEFD423044DF900C515DE /* STPAPIClient+ApplePayWithPaymentMethod.h */,
 				95BAEFD923044DFA00C515DE /* STPAPIClient+ApplePayWithPaymentMethod.m */,
 			);
@@ -199,18 +259,30 @@
 			buildActionMask = 2147483647;
 			files = (
 				3A4EF3251DC8F90100A7C0BD /* TPSCardFieldManager.m in Sources */,
+				95AFA0102305860B00FC2D1A /* RCTConvert+STPSourceParams.m in Sources */,
+				95AFA025230586EE00FC2D1A /* RCTConvert+STPSourceStatus.m in Sources */,
 				95BAEFDC23044DFA00C515DE /* RCTConvert+STPPaymentMethod.m in Sources */,
 				3A1FF6F81DC3857F00A43A04 /* TPSStripeManager.m in Sources */,
+				95AFA0192305867F00FC2D1A /* RCTConvert+STPSourceRedirectStatus.m in Sources */,
 				95BAEFDF23044DFA00C515DE /* RCTConvert+STPBankAccountStatus.m in Sources */,
+				95AFA0162305866500FC2D1A /* RCTConvert+STPSourceFlow.m in Sources */,
+				95AFA01C230586A300FC2D1A /* RCTConvert+STPSourceVerificationStatus.m in Sources */,
 				95BAEFDE23044DFA00C515DE /* RCTConvert+STPPaymentMethodCard.m in Sources */,
+				95AFA02E2305875B00FC2D1A /* RCTConvert+STPSource.m in Sources */,
 				B81C8CDE1F978E320021EB09 /* TPSError.m in Sources */,
 				95BAEFE123044DFA00C515DE /* RCTConvert+STPCard.m in Sources */,
+				95AFA0282305870E00FC2D1A /* RCTConvert+STPSourceType.m in Sources */,
+				95AFA00D2305851700FC2D1A /* RCTConvert+STPCardParams.m in Sources */,
+				95AFA01F230586BF00FC2D1A /* RCTConvert+STPSourceCard3DSecureStatus.m in Sources */,
 				95BAEFDD23044DFA00C515DE /* RCTConvert+STPCardFundingType.m in Sources */,
+				95AFA02B2305872A00FC2D1A /* RCTConvert+STPSourceUsage.m in Sources */,
 				3A4EF3281DC8FD4600A7C0BD /* TPSCardField.m in Sources */,
+				95AFA0132305864500FC2D1A /* RCTConvert+STPPaymentMethodCardParams.m in Sources */,
 				95BAEFE223044DFA00C515DE /* RCTConvert+STPBankAccountHolderType.m in Sources */,
 				95BAEFDB23044DFA00C515DE /* RCTConvert+STPCardBrand.m in Sources */,
 				95BAEFE023044DFA00C515DE /* RCTConvert+STPToken.m in Sources */,
 				95BAEFE323044DFA00C515DE /* STPAPIClient+ApplePayWithPaymentMethod.m in Sources */,
+				95AFA022230586D500FC2D1A /* RCTConvert+STPSourceCardDetails.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
