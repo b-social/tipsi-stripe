@@ -1,9 +1,16 @@
-//
-//  RCTConvert+STPPaymentMethodCardParams.m
-//  TPSStripe
-//
-//  Created by Ayman Osman on 15/08/2019.
-//  Copyright © 2019 Tipsi. All rights reserved.
-//
+#import "RCTConvert+STPPaymentMethodCardParams.h"
 
-#import <Foundation/Foundation.h>
+@implementation RCTConvert (STPPaymentMethodCardParams)
+
++ (STPPaymentMethodCardParams*)STPPaymentMethodCardParams:(id)params {
+    STPPaymentMethodCardParams *cardParams = [STPPaymentMethodCardParams new];
+    
+    [cardParams setNumber: params[@"number"]];
+    [cardParams setExpMonth: params[@"expMonth"]];
+    [cardParams setExpYear: params[@"expYear"]];
+    [cardParams setCvc: params[@"cvc"]];
+    
+    return cardParams;
+}
+
+@end

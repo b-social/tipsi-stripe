@@ -1,13 +1,8 @@
-//
-//  RCTConvert+STPSource.h
-//  TPSStripe
-//
-//  Created by Ayman Osman on 15/08/2019.
-//  Copyright © 2019 Tipsi. All rights reserved.
-//
+#import <React/RCTConvert.h>
+#import <Stripe/Stripe.h>
 
-#ifndef RCTConvert_STPSource_h
-#define RCTConvert_STPSource_h
+@interface RCTConvert (STPSource)
 
++ (NSDictionary *)STPSourceDictionary:(STPSource*)source;
 
-#endif /* RCTConvert_STPSource_h */
+@end

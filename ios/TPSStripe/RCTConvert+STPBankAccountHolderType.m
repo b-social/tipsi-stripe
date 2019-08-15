@@ -1,11 +1,3 @@
-//
-//  RCTConvert+STPBankAccountHolderType.m
-//  bsocial
-//
-//  Created by Ayman Osman on 13/08/2019.
-//  Copyright © 2019 B Social. All rights reserved.
-//
-
 #import "RCTConvert+STPBankAccountHolderType.h"
 
 @implementation RCTConvert (STPBankAccountHolderType)

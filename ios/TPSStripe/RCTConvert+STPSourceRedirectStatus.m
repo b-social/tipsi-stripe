@@ -1,9 +1,19 @@
-//
-//  RCTConvert+STPSourceRedirectStatus.m
-//  TPSStripe
-//
-//  Created by Ayman Osman on 15/08/2019.
-//  Copyright © 2019 Tipsi. All rights reserved.
-//
+#import "RCTConvert+STPSourceRedirectStatus.h"
 
-#import <Foundation/Foundation.h>
+@implementation RCTConvert (STPSourceRedirectStatus)
+
++ (NSString *)STPSourceRedirectStatusString:(STPSourceRedirectStatus)inputStatus {
+    switch (inputStatus) {
+        case STPSourceRedirectStatusPending:
+            return @"pending";
+        case STPSourceRedirectStatusSucceeded:
+            return @"succeeded";
+        case STPSourceRedirectStatusFailed:
+            return @"failed";
+        case STPSourceRedirectStatusUnknown:
+        default:
+            return @"unknown";
+    }
+}
+
+@end

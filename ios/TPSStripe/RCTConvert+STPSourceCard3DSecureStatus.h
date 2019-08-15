@@ -1,13 +1,8 @@
-//
-//  RCTConvert+STPSourceCard3DSecureStatus.h
-//  TPSStripe
-//
-//  Created by Ayman Osman on 15/08/2019.
-//  Copyright © 2019 Tipsi. All rights reserved.
-//
+#import <React/RCTConvert.h>
+#import <Stripe/Stripe.h>
 
-#ifndef RCTConvert_STPSourceCard3DSecureStatus_h
-#define RCTConvert_STPSourceCard3DSecureStatus_h
+@interface RCTConvert (STPSourceCard3DSecureStatus)
 
++ (NSString *)STPSourceCard3DSecureStatusString:(STPSourceCard3DSecureStatus)inputStatus;
 
-#endif /* RCTConvert_STPSourceCard3DSecureStatus_h */
+@end

@@ -1,13 +1,8 @@
-//
-//  RCTConvert+STPSourceCardDetails.h
-//  TPSStripe
-//
-//  Created by Ayman Osman on 15/08/2019.
-//  Copyright © 2019 Tipsi. All rights reserved.
-//
+#import <React/RCTConvert.h>
+#import <Stripe/Stripe.h>
 
-#ifndef RCTConvert_STPSourceCardDetails_h
-#define RCTConvert_STPSourceCardDetails_h
+@interface RCTConvert (STPSourceCardDetails)
 
++ (NSDictionary*)STPSourceCardDetailsDictionary:(STPSourceCardDetails*)cardDetails;
 
-#endif /* RCTConvert_STPSourceCardDetails_h */
+@end

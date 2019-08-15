@@ -1,9 +1,24 @@
-//
-//  RCTConvert+STPSourceStatus.m
-//  TPSStripe
-//
-//  Created by Ayman Osman on 15/08/2019.
-//  Copyright © 2019 Tipsi. All rights reserved.
-//
+#import "RCTConvert+STPSourceStatus.h"
 
-#import <Foundation/Foundation.h>
+@implementation RCTConvert (STPSourceStatus)
+
++ (NSString *)STPSourceStatusString:(STPSourceStatus)inputStatus {
+    switch (inputStatus) {
+        case STPSourceStatusPending:
+            return @"pending";
+        case STPSourceStatusChargeable:
+            return @"chargable";
+        case STPSourceStatusConsumed:
+            return @"consumed";
+        case STPSourceStatusCanceled:
+            return @"canceled";
+        case STPSourceStatusFailed:
+            return @"failed";
+        case STPSourceStatusUnknown:
+        default:
+            return @"unknown";
+    }
+}
+
+
+@end

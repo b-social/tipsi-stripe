@@ -1,13 +1,8 @@
-//
-//  RCTConvert+STPSourceUsage.h
-//  TPSStripe
-//
-//  Created by Ayman Osman on 15/08/2019.
-//  Copyright © 2019 Tipsi. All rights reserved.
-//
+#import <React/RCTConvert.h>
+#import <Stripe/Stripe.h>
 
-#ifndef RCTConvert_STPSourceUsage_h
-#define RCTConvert_STPSourceUsage_h
+@interface RCTConvert (STPSourceUsage)
 
++ (NSString *)STPSourceUsageString:(STPSourceUsage)inputUsage;
 
-#endif /* RCTConvert_STPSourceUsage_h */
+@end

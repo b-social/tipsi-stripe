@@ -1,13 +1,8 @@
-//
-//  RCTConvert+STPSourceVerificationStatus.h
-//  TPSStripe
-//
-//  Created by Ayman Osman on 15/08/2019.
-//  Copyright © 2019 Tipsi. All rights reserved.
-//
+#import <React/RCTConvert.h>
+#import <Stripe/Stripe.h>
 
-#ifndef RCTConvert_STPSourceVerificationStatus_h
-#define RCTConvert_STPSourceVerificationStatus_h
+@interface RCTConvert (STPSourceVerificationStatus)
 
++ (NSString *)STPSourceVerificationStatusString:(STPSourceVerificationStatus)inputStatus;
 
-#endif /* RCTConvert_STPSourceVerificationStatus_h */
+@end

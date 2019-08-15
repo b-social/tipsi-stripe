@@ -1,13 +1,8 @@
-//
-//  RCTConvert+STPSourceRedirectStatus.h
-//  TPSStripe
-//
-//  Created by Ayman Osman on 15/08/2019.
-//  Copyright © 2019 Tipsi. All rights reserved.
-//
+#import <React/RCTConvert.h>
+#import <Stripe/Stripe.h>
 
-#ifndef RCTConvert_STPSourceRedirectStatus_h
-#define RCTConvert_STPSourceRedirectStatus_h
+@interface RCTConvert (STPSourceRedirectStatus)
 
++ (NSString *)STPSourceRedirectStatusString:(STPSourceRedirectStatus)inputStatus;
 
-#endif /* RCTConvert_STPSourceRedirectStatus_h */
+@end

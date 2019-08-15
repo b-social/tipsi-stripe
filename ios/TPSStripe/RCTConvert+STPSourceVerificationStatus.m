@@ -1,9 +1,19 @@
-//
-//  RCTConvert+STPSourceVerificationStatus.m
-//  TPSStripe
-//
-//  Created by Ayman Osman on 15/08/2019.
-//  Copyright © 2019 Tipsi. All rights reserved.
-//
+#import "RCTConvert+STPSourceVerificationStatus.h"
 
-#import <Foundation/Foundation.h>
+@implementation RCTConvert (STPSourceVerificationStatus)
+
++ (NSString *)STPSourceVerificationStatusString:(STPSourceVerificationStatus)inputStatus {
+    switch (inputStatus) {
+        case STPSourceVerificationStatusPending:
+            return @"pending";
+        case STPSourceVerificationStatusSucceeded:
+            return @"succeeded";
+        case STPSourceVerificationStatusFailed:
+            return @"failed";
+        case STPSourceVerificationStatusUnknown:
+        default:
+            return @"unknown";
+    }
+}
+
+@end

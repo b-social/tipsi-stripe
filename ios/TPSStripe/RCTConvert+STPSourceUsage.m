@@ -1,9 +1,17 @@
-//
-//  RCTConvert+STPSourceUsage.m
-//  TPSStripe
-//
-//  Created by Ayman Osman on 15/08/2019.
-//  Copyright © 2019 Tipsi. All rights reserved.
-//
+#import "RCTConvert+STPSourceUsage.h"
 
-#import <Foundation/Foundation.h>
+@implementation RCTConvert (STPSourceUsage)
+
++ (NSString *)STPSourceUsageString:(STPSourceUsage)inputUsage {
+    switch (inputUsage) {
+        case STPSourceUsageReusable:
+            return @"reusable";
+        case STPSourceUsageSingleUse:
+            return @"singleUse";
+        case STPSourceUsageUnknown:
+        default:
+            return @"unknown";
+    }
+}
+
+@end

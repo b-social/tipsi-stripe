@@ -1,9 +1,27 @@
-//
-//  RCTConvert+STPSourceType.m
-//  TPSStripe
-//
-//  Created by Ayman Osman on 15/08/2019.
-//  Copyright © 2019 Tipsi. All rights reserved.
-//
+#import "RCTConvert+STPSourceType.h"
 
-#import <Foundation/Foundation.h>
+@implementation RCTConvert (STPSourceType)
+
++ (NSString *)STPSourceTypeString:(STPSourceType)inputType {
+    switch (inputType) {
+        case STPSourceTypeBancontact:
+            return @"bancontact";
+        case STPSourceTypeGiropay:
+            return @"giropay";
+        case STPSourceTypeIDEAL:
+            return @"ideal";
+        case STPSourceTypeSEPADebit:
+            return @"sepaDebit";
+        case STPSourceTypeSofort:
+            return @"sofort";
+        case STPSourceTypeThreeDSecure:
+            return @"threeDSecure";
+        case STPSourceTypeAlipay:
+            return @"alipay";
+        case STPSourceTypeUnknown:
+        default:
+            return @"unknown";
+    }
+}
+
+@end
