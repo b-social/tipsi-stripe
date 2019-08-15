@@ -11,6 +11,13 @@
 #import <React/RCTConvert.h>
 
 #import "TPSError.h"
+#import "RCTConvert+STPToken.h"
+#import "RCTConvert+STPBankAccountHolderType.h"
+#import "RCTConvert+STPBankAccountStatus.h"
+#import "STPAPIClient+ApplePayWithPaymentMethod.h"
+#import "RCTConvert+STPPaymentMethod.h"
+#import "RCTConvert+STPCardBrand.h"
+#import "RCTConvert+STPCardFundingType.h"
 
 NSString * const kErrorKeyCode = @"errorCode";
 NSString * const kErrorKeyDescription = @"description";
@@ -27,76 +34,355 @@ NSString * const kErrorKeyNoPaymentRequest = @"noPaymentRequest";
 NSString * const kErrorKeyNoMerchantIdentifier = @"noMerchantIdentifier";
 NSString * const kErrorKeyNoAmount = @"noAmount";
 
-@implementation RCTConvert (STPBankAccountHolderType)
-
-RCT_ENUM_CONVERTER(STPBankAccountHolderType,
-                (@{
-                    @"individual": @(STPBankAccountHolderTypeIndividual),
-                    @"company": @(STPBankAccountHolderTypeCompany),
-                    }),
-                STPBankAccountHolderTypeCompany,
-                integerValue)
-
-+ (NSString *)STPBankAccountHolderTypeString:(STPBankAccountHolderType)type {
-    NSString *string = nil;
-    switch (type) {
-        case STPBankAccountHolderTypeCompany: {
-            string = @"company";
-        }
-            break;
-        case STPBankAccountHolderTypeIndividual:
-        default: {
-            string = @"individual";
-        }
-            break;
-    }
-    return string;
-}
-
-@end
-
-@implementation RCTConvert (STPBankAccountStatus)
-
-RCT_ENUM_CONVERTER(STPBankAccountStatus,
-                (@{
-                    @"new": @(STPBankAccountStatusNew),
-                    @"validated": @(STPBankAccountStatusValidated),
-                    @"verified": @(STPBankAccountStatusVerified),
-                    @"errored": @(STPBankAccountStatusErrored),
-                    }),
-                STPBankAccountStatusNew,
-                integerValue)
-
-+ (NSString *)STPBankAccountStatusString:(STPBankAccountStatus)status {
-    NSString *string = nil;
-    switch (status) {
-        case STPBankAccountStatusValidated: {
-            string = @"validated";
-        }
-            break;
-        case STPBankAccountStatusVerified: {
-            string = @"verified";
-        }
-            break;
-        case STPBankAccountStatusErrored: {
-            string = @"errored";
-        }
-            break;
-        case STPBankAccountStatusNew:
-        default: {
-            string = @"new";
-        }
-            break;
-    }
-    return string;
-}
-
-@end
-
 NSString * const TPSPaymentNetworkAmex = @"american_express";
 NSString * const TPSPaymentNetworkDiscover = @"discover";
 NSString * const TPSPaymentNetworkMasterCard = @"master_card";
 NSString * const TPSPaymentNetworkVisa = @"visa";
+
+
+
+@implementation RCTConvert (STPCardParams)
+
++ (STPCardParams *)STPCardParams:(NSDictionary *)params {
+    STPCardParams *cardParams = [[STPCardParams alloc] init];
+
+    [cardParams setNumber: params[@"number"]];
+    [cardParams setExpMonth: [params[@"expMonth"] integerValue]];
+    [cardParams setExpYear: [params[@"expYear"] integerValue]];
+    [cardParams setCvc: params[@"cvc"]];
+
+    [cardParams setCurrency: params[@"currency"]];
+    [cardParams setName: params[@"name"]];
+    [cardParams setAddressLine1: params[@"addressLine1"]];
+    [cardParams setAddressLine2: params[@"addressLine2"]];
+    [cardParams setAddressCity: params[@"addressCity"]];
+    [cardParams setAddressState: params[@"addressState"]];
+    [cardParams setAddressCountry: params[@"addressCountry"]];
+    [cardParams setAddressZip: params[@"addressZip"]];
+
+    return cardParams;
+}
+
+@end
+
+@implementation RCTConvert (STPSourceParams)
+
++ (STPSourceParams*)STPSourceParams:(id)params {
+    NSString *sourceType = params[@"type"];
+    STPSourceParams *sourceParams;
+    if ([sourceType isEqualToString:@"bancontact"]) {
+        sourceParams = [STPSourceParams bancontactParamsWithAmount:[[params objectForKey:@"amount"] unsignedIntegerValue] name:params[@"name"] returnURL:params[@"returnURL"] statementDescriptor:params[@"statementDescriptor"]];
+    }
+    if ([sourceType isEqualToString:@"giropay"]) {
+        sourceParams = [STPSourceParams giropayParamsWithAmount:[[params objectForKey:@"amount"] unsignedIntegerValue] name:params[@"name"] returnURL:params[@"returnURL"] statementDescriptor:params[@"statementDescriptor"]];
+    }
+    if ([sourceType isEqualToString:@"ideal"]) {
+        sourceParams = [STPSourceParams idealParamsWithAmount:[[params objectForKey:@"amount"] unsignedIntegerValue] name:params[@"name"] returnURL:params[@"returnURL"] statementDescriptor:params[@"statementDescriptor"] bank:params[@"bank"]];
+    }
+    if ([sourceType isEqualToString:@"sepaDebit"]) {
+        sourceParams = [STPSourceParams sepaDebitParamsWithName:params[@"name"] iban:params[@"iban"] addressLine1:params[@"addressLine1"] city:params[@"city"] postalCode:params[@"postalCode"] country:params[@"country"]];
+    }
+    if ([sourceType isEqualToString:@"sofort"]) {
+        sourceParams = [STPSourceParams sofortParamsWithAmount:[[params objectForKey:@"amount"] unsignedIntegerValue] returnURL:params[@"returnURL"] country:params[@"country"] statementDescriptor:params[@"statementDescriptor"]];
+    }
+    if ([sourceType isEqualToString:@"threeDSecure"]) {
+        sourceParams = [STPSourceParams threeDSecureParamsWithAmount:[[params objectForKey:@"amount"] unsignedIntegerValue] currency:params[@"currency"] returnURL:params[@"returnURL"] card:params[@"card"]];
+    }
+    if ([sourceType isEqualToString:@"alipay"]) {
+        sourceParams = [STPSourceParams alipayParamsWithAmount:[[params objectForKey:@"amount"] unsignedIntegerValue] currency:params[@"currency"] returnURL:params[@"returnURL"]];
+    }
+    if ([sourceType isEqualToString:@"card"]) {
+        sourceParams = [STPSourceParams cardParamsWithCard:[RCTConvert STPCardParams:params]];
+    }
+
+    return sourceParams;
+}
+
+@end
+
+@implementation RCTConvert (STPPaymentMethodCardParams)
+
++ (STPPaymentMethodCardParams*)STPPaymentMethodCardParams:(id)params {
+    STPPaymentMethodCardParams *cardParams = [STPPaymentMethodCardParams new];
+
+    [cardParams setNumber: params[@"number"]];
+    [cardParams setExpMonth: params[@"expMonth"]];
+    [cardParams setExpYear: params[@"expYear"]];
+    [cardParams setCvc: params[@"cvc"]];
+
+    return cardParams;
+}
+
+@end
+
+@implementation RCTConvert (STPSourceFlow)
+
++ (NSString *)STPSourceFlowString:(STPSourceFlow)inputFlow {
+    switch (inputFlow) {
+        case STPSourceFlowNone:
+            return @"none";
+        case STPSourceFlowRedirect:
+            return @"redirect";
+        case STPSourceFlowCodeVerification:
+            return @"codeVerification";
+        case STPSourceFlowReceiver:
+            return @"receiver";
+        case STPSourceFlowUnknown:
+        default:
+            return @"unknown";
+    }
+}
+
+@end
+
+@implementation RCTConvert (STPSourceRedirectStatus)
+
++ (NSString *)STPSourceRedirectStatusString:(STPSourceRedirectStatus)inputStatus {
+    switch (inputStatus) {
+        case STPSourceRedirectStatusPending:
+            return @"pending";
+        case STPSourceRedirectStatusSucceeded:
+            return @"succeeded";
+        case STPSourceRedirectStatusFailed:
+            return @"failed";
+        case STPSourceRedirectStatusUnknown:
+        default:
+            return @"unknown";
+    }
+}
+
+@end
+
+@implementation RCTConvert (STPSourceVerificationStatus)
+
++ (NSString *)STPSourceVerificationStatusString:(STPSourceVerificationStatus)inputStatus {
+    switch (inputStatus) {
+        case STPSourceVerificationStatusPending:
+            return @"pending";
+        case STPSourceVerificationStatusSucceeded:
+            return @"succeeded";
+        case STPSourceVerificationStatusFailed:
+            return @"failed";
+        case STPSourceVerificationStatusUnknown:
+        default:
+            return @"unknown";
+    }
+}
+
+@end
+
+@implementation RCTConvert (STPSourceCard3DSecureStatus)
+
++ (NSString *)STPSourceCard3DSecureStatusString:(STPSourceCard3DSecureStatus)inputStatus {
+    switch (inputStatus) {
+        case STPSourceCard3DSecureStatusRequired:
+            return @"required";
+        case STPSourceCard3DSecureStatusOptional:
+            return @"optional";
+        case STPSourceCard3DSecureStatusNotSupported:
+            return @"notSupported";
+        case STPSourceCard3DSecureStatusUnknown:
+        default:
+            return @"unknown";
+    }
+}
+
+@end
+
+@implementation RCTConvert (STPSourceCardDetails)
+
++ (NSDictionary*)STPSourceCardDetailsDictionary:(STPSourceCardDetails*)cardDetails {
+    NSMutableDictionary *dict = [@{} mutableCopy];
+
+
+    [cardDetails setValue:cardDetails.last4 forKey:@"last4"];
+    [cardDetails setValue:@(cardDetails.expMonth) forKey:@"expMonth"];
+    [cardDetails setValue:@(cardDetails.expYear) forKey:@"expYear"];
+    [cardDetails setValue:[RCTConvert STPCardBrandString:cardDetails.brand] forKey:@"brand"];
+    [cardDetails setValue:[RCTConvert STPCardFundingTypeString:cardDetails.funding] forKey:@"funding"];
+    [cardDetails setValue:cardDetails.country forKey:@"country"];
+    [cardDetails setValue:[RCTConvert STPSourceCard3DSecureStatusString:cardDetails.threeDSecure] forKey:@"threeDSecure"];
+
+    return dict;
+}
+
+@end
+
+@implementation RCTConvert (STPSourceStatus)
+
++ (NSString *)STPSourceStatusString:(STPSourceStatus)inputStatus {
+    switch (inputStatus) {
+        case STPSourceStatusPending:
+            return @"pending";
+        case STPSourceStatusChargeable:
+            return @"chargable";
+        case STPSourceStatusConsumed:
+            return @"consumed";
+        case STPSourceStatusCanceled:
+            return @"canceled";
+        case STPSourceStatusFailed:
+            return @"failed";
+        case STPSourceStatusUnknown:
+        default:
+            return @"unknown";
+    }
+}
+
+
+@end
+
+@implementation RCTConvert (STPSourceType)
+
++ (NSString *)STPSourceTypeString:(STPSourceType)inputType {
+    switch (inputType) {
+        case STPSourceTypeBancontact:
+            return @"bancontact";
+        case STPSourceTypeGiropay:
+            return @"giropay";
+        case STPSourceTypeIDEAL:
+            return @"ideal";
+        case STPSourceTypeSEPADebit:
+            return @"sepaDebit";
+        case STPSourceTypeSofort:
+            return @"sofort";
+        case STPSourceTypeThreeDSecure:
+            return @"threeDSecure";
+        case STPSourceTypeAlipay:
+            return @"alipay";
+        case STPSourceTypeUnknown:
+        default:
+            return @"unknown";
+    }
+}
+
+@end
+
+@implementation RCTConvert (STPSourceUsage)
+
++ (NSString *)STPSourceUsageString:(STPSourceUsage)inputUsage {
+    switch (inputUsage) {
+        case STPSourceUsageReusable:
+            return @"reusable";
+        case STPSourceUsageSingleUse:
+            return @"singleUse";
+        case STPSourceUsageUnknown:
+        default:
+            return @"unknown";
+    }
+}
+
+@end
+
+@implementation RCTConvert (STPSource)
+
++ (NSDictionary *)STPSourceDictionary:(STPSource*)source {
+    NSMutableDictionary *result = [@{} mutableCopy];
+
+    // Source
+    [result setValue:source.clientSecret forKey:@"clientSecret"];
+    [result setValue:@([source.created timeIntervalSince1970]) forKey:@"created"];
+    [result setValue:source.currency forKey:@"currency"];
+    [result setValue:@(source.livemode) forKey:@"livemode"];
+    [result setValue:source.amount forKey:@"amount"];
+    [result setValue:source.stripeID forKey:@"sourceId"];
+
+    // Flow
+    [result setValue:[RCTConvert STPSourceFlowString:source.flow] forKey:@"flow"];
+
+    // Metadata
+    if (source.metadata) {
+        [result setValue:source.metadata forKey:@"metadata"];
+    }
+
+    // Owner
+    if (source.owner) {
+        NSMutableDictionary *owner = [@{} mutableCopy];
+        [result setValue:owner forKey:@"owner"];
+
+        if (source.owner.address) {
+            [owner setObject:source.owner.address forKey:@"address"];
+        }
+        [owner setValue:source.owner.email forKey:@"email"];
+        [owner setValue:source.owner.name forKey:@"name"];
+        [owner setValue:source.owner.phone forKey:@"phone"];
+
+        if (source.owner.verifiedAddress) {
+            [owner setObject:source.owner.verifiedAddress forKey:@"verifiedAddress"];
+        }
+        [owner setValue:source.owner.verifiedEmail forKey:@"verifiedEmail"];
+        [owner setValue:source.owner.verifiedName forKey:@"verifiedName"];
+        [owner setValue:source.owner.verifiedPhone forKey:@"verifiedPhone"];
+    }
+
+    // Details
+    if (source.details) {
+        [result setValue:source.details forKey:@"details"];
+    }
+
+    // Receiver
+    if (source.receiver) {
+        NSMutableDictionary *receiver = [@{} mutableCopy];
+        [result setValue:receiver forKey:@"receiver"];
+
+        [receiver setValue:source.receiver.address forKey:@"address"];
+        [receiver setValue:source.receiver.amountCharged forKey:@"amountCharged"];
+        [receiver setValue:source.receiver.amountReceived forKey:@"amountReceived"];
+        [receiver setValue:source.receiver.amountReturned forKey:@"amountReturned"];
+    }
+
+    // Redirect
+    if (source.redirect) {
+        NSMutableDictionary *redirect = [@{} mutableCopy];
+        [result setValue:redirect forKey:@"redirect"];
+        NSString *returnURL = source.redirect.returnURL.absoluteString;
+        [redirect setValue:returnURL forKey:@"returnURL"];
+        NSString *url = source.redirect.url.absoluteString;
+        [redirect setValue:url forKey:@"url"];
+        [redirect setValue:[RCTConvert STPSourceRedirectStatusString:source.redirect.status] forKey:@"status"];
+    }
+
+    // Verification
+    if (source.verification) {
+        NSMutableDictionary *verification = [@{} mutableCopy];
+        [result setValue:verification forKey:@"verification"];
+
+        [verification setValue:source.verification.attemptsRemaining forKey:@"attemptsRemaining"];
+        [verification setValue:[RCTConvert STPSourceVerificationStatusString:source.verification.status] forKey:@"status"];
+    }
+
+    // Status
+    [result setValue:[RCTConvert STPSourceStatusString:source.status] forKey:@"status"];
+
+    // Type
+    [result setValue:[RCTConvert STPSourceTypeString:source.type] forKey:@"type"];
+
+    // Usage
+    [result setValue:[RCTConvert STPSourceUsageString:source.usage] forKey:@"usage"];
+
+    // CardDetails
+    if (source.cardDetails) {
+        [result setValue:[RCTConvert STPSourceCardDetailsDictionary:source.cardDetails] forKey:@"cardDetails"];
+
+    }
+
+    // SepaDebitDetails
+    if (source.sepaDebitDetails) {
+        NSMutableDictionary *sepaDebitDetails = [@{} mutableCopy];
+        [result setValue:sepaDebitDetails forKey:@"sepaDebitDetails"];
+
+        [sepaDebitDetails setValue:source.sepaDebitDetails.last4 forKey:@"last4"];
+        [sepaDebitDetails setValue:source.sepaDebitDetails.bankCode forKey:@"bankCode"];
+        [sepaDebitDetails setValue:source.sepaDebitDetails.country forKey:@"country"];
+        [sepaDebitDetails setValue:source.sepaDebitDetails.fingerprint forKey:@"fingerprint"];
+        [sepaDebitDetails setValue:source.sepaDebitDetails.mandateReference forKey:@"mandateReference"];
+        NSString *mandateURL = source.sepaDebitDetails.mandateURL.absoluteString;
+        [sepaDebitDetails setValue:mandateURL forKey:@"mandateURL"];
+    }
+
+    return result;
+}
+
+@end
 
 @implementation StripeModule
 {
@@ -191,18 +477,18 @@ RCT_EXPORT_METHOD(createTokenWithCard:(NSDictionary *)params
     promiseResolver = resolve;
     promiseRejector = reject;
 
-    STPCardParams *cardParams = [self createCard:params];
+    STPCardParams *cardParams = [RCTConvert STPCardParams:params];
 
     STPAPIClient *stripeAPIClient = [self newAPIClient];
 
     [stripeAPIClient createTokenWithCard:cardParams completion:^(STPToken *token, NSError *error) {
-        requestIsCompleted = YES;
+        self->requestIsCompleted = YES;
 
         if (error) {
-            NSDictionary *jsError = [errorCodes valueForKey:kErrorKeyApi];
+            NSDictionary *jsError = [self->errorCodes valueForKey:kErrorKeyApi];
             [self rejectPromiseWithCode:jsError[kErrorKeyCode] message:error.localizedDescription];
         } else {
-            resolve([self convertTokenObject:token]);
+            resolve([RCTConvert STPTokenDictionary:token]);
         }
     }];
 }
@@ -220,7 +506,7 @@ RCT_EXPORT_METHOD(createPaymentMethodWithCard:(NSDictionary *)params
     promiseResolver = resolve;
     promiseRejector = reject;
 
-    STPPaymentMethodCardParams *cardParams = [self createCardWithPaymentMethod:params];
+    STPPaymentMethodCardParams *cardParams = [RCTConvert STPPaymentMethodCardParams:params];
 
     STPAPIClient *stripeAPIClient = [self newAPIClient];
 
@@ -228,13 +514,13 @@ RCT_EXPORT_METHOD(createPaymentMethodWithCard:(NSDictionary *)params
     STPPaymentMethodParams *paymentMethodParams = [STPPaymentMethodParams paramsWithCard:cardParams billingDetails:nil metadata:nil];
 
     [stripeAPIClient createPaymentMethodWithParams:paymentMethodParams completion:^(STPPaymentMethod *paymentMethod, NSError *error) {
-        requestIsCompleted = YES;
+        self->requestIsCompleted = YES;
 
         if (error) {
-            NSDictionary *jsError = [errorCodes valueForKey:kErrorKeyApi];
+            NSDictionary *jsError = [self->errorCodes valueForKey:kErrorKeyApi];
             [self rejectPromiseWithCode:jsError[kErrorKeyCode] message:error.localizedDescription];
         } else {
-            resolve([self convertPaymentMethodObject:paymentMethod]);
+            resolve([RCTConvert STPPaymentMethodDictionary:paymentMethod]);
         }
     }];
 }
@@ -266,13 +552,13 @@ RCT_EXPORT_METHOD(createTokenWithBankAccount:(NSDictionary *)params
     STPAPIClient *stripeAPIClient = [self newAPIClient];
 
     [stripeAPIClient createTokenWithBankAccount:bankAccount completion:^(STPToken *token, NSError *error) {
-        requestIsCompleted = YES;
+        self->requestIsCompleted = YES;
 
         if (error) {
-            NSDictionary *jsError = [errorCodes valueForKey:kErrorKeyApi];
+            NSDictionary *jsError = [self->errorCodes valueForKey:kErrorKeyApi];
             [self rejectPromiseWithCode:jsError[kErrorKeyCode] message:error.localizedDescription];
         } else {
-            resolve([self convertTokenObject:token]);
+            resolve([RCTConvert STPTokenDictionary:token]);
         }
     }];
 }
@@ -288,75 +574,49 @@ RCT_EXPORT_METHOD(createSourceWithParams:(NSDictionary *)params
 
     requestIsCompleted = NO;
 
-    NSString *sourceType = params[@"type"];
-    STPSourceParams *sourceParams;
-    if ([sourceType isEqualToString:@"bancontact"]) {
-            sourceParams = [STPSourceParams bancontactParamsWithAmount:[[params objectForKey:@"amount"] unsignedIntegerValue] name:params[@"name"] returnURL:params[@"returnURL"] statementDescriptor:params[@"statementDescriptor"]];
-    }
-    if ([sourceType isEqualToString:@"giropay"]) {
-            sourceParams = [STPSourceParams giropayParamsWithAmount:[[params objectForKey:@"amount"] unsignedIntegerValue] name:params[@"name"] returnURL:params[@"returnURL"] statementDescriptor:params[@"statementDescriptor"]];
-    }
-    if ([sourceType isEqualToString:@"ideal"]) {
-            sourceParams = [STPSourceParams idealParamsWithAmount:[[params objectForKey:@"amount"] unsignedIntegerValue] name:params[@"name"] returnURL:params[@"returnURL"] statementDescriptor:params[@"statementDescriptor"] bank:params[@"bank"]];
-    }
-    if ([sourceType isEqualToString:@"sepaDebit"]) {
-            sourceParams = [STPSourceParams sepaDebitParamsWithName:params[@"name"] iban:params[@"iban"] addressLine1:params[@"addressLine1"] city:params[@"city"] postalCode:params[@"postalCode"] country:params[@"country"]];
-    }
-    if ([sourceType isEqualToString:@"sofort"]) {
-            sourceParams = [STPSourceParams sofortParamsWithAmount:[[params objectForKey:@"amount"] unsignedIntegerValue] returnURL:params[@"returnURL"] country:params[@"country"] statementDescriptor:params[@"statementDescriptor"]];
-    }
-    if ([sourceType isEqualToString:@"threeDSecure"]) {
-            sourceParams = [STPSourceParams threeDSecureParamsWithAmount:[[params objectForKey:@"amount"] unsignedIntegerValue] currency:params[@"currency"] returnURL:params[@"returnURL"] card:params[@"card"]];
-    }
-    if ([sourceType isEqualToString:@"alipay"]) {
-            sourceParams = [STPSourceParams alipayParamsWithAmount:[[params objectForKey:@"amount"] unsignedIntegerValue] currency:params[@"currency"] returnURL:params[@"returnURL"]];
-    }
-    if ([sourceType isEqualToString:@"card"]) {
-        sourceParams = [STPSourceParams cardParamsWithCard:[self createCard:params]];
-    }
-
+    STPSourceParams* sourceParams = [RCTConvert STPSourceParams:params];
     STPAPIClient* stripeAPIClient = [self newAPIClient];
 
     [stripeAPIClient createSourceWithParams:sourceParams completion:^(STPSource *source, NSError *error) {
-        requestIsCompleted = YES;
+        self->requestIsCompleted = YES;
 
         if (error) {
-            NSDictionary *jsError = [errorCodes valueForKey:kErrorKeyApi];
+            NSDictionary *jsError = [self->errorCodes valueForKey:kErrorKeyApi];
             reject(jsError[kErrorKeyCode], error.localizedDescription, nil);
         } else {
             if (source.redirect) {
                 self.redirectContext = [[STPRedirectContext alloc] initWithSource:source completion:^(NSString *sourceID, NSString *clientSecret, NSError *error) {
                     if (error) {
-                        NSDictionary *jsError = [errorCodes valueForKey:kErrorKeyRedirectSpecific];
+                        NSDictionary *jsError = [self->errorCodes valueForKey:kErrorKeyRedirectSpecific];
                         reject(jsError[kErrorKeyCode], error.localizedDescription, nil);
                     } else {
                         [stripeAPIClient startPollingSourceWithId:sourceID clientSecret:clientSecret timeout:10 completion:^(STPSource *source, NSError *error) {
                             if (error) {
-                                NSDictionary *jsError = [errorCodes valueForKey:kErrorKeyApi];
+                                NSDictionary *jsError = [self->errorCodes valueForKey:kErrorKeyApi];
                                 reject(jsError[kErrorKeyCode], error.localizedDescription, nil);
                             } else {
                                 switch (source.status) {
                                     case STPSourceStatusChargeable:
                                     case STPSourceStatusConsumed:
-                                        resolve([self convertSourceObject:source]);
+                                        resolve([RCTConvert STPSourceDictionary:source]);
                                         break;
                                     case STPSourceStatusCanceled: {
-                                        NSDictionary *error = [errorCodes valueForKey:kErrorKeySourceStatusCanceled];
+                                        NSDictionary *error = [self->errorCodes valueForKey:kErrorKeySourceStatusCanceled];
                                         reject(error[kErrorKeyCode], error[kErrorKeyDescription], nil);
                                     }
                                         break;
                                     case STPSourceStatusPending: {
-                                        NSDictionary *error = [errorCodes valueForKey:kErrorKeySourceStatusPending];
+                                        NSDictionary *error = [self->errorCodes valueForKey:kErrorKeySourceStatusPending];
                                         reject(error[kErrorKeyCode], error[kErrorKeyDescription], nil);
                                     }
                                         break;
                                     case STPSourceStatusFailed: {
-                                        NSDictionary *error = [errorCodes valueForKey:kErrorKeySourceStatusFailed];
+                                        NSDictionary *error = [self->errorCodes valueForKey:kErrorKeySourceStatusFailed];
                                         reject(error[kErrorKeyCode], error[kErrorKeyDescription], nil);
                                     }
                                         break;
                                     case STPSourceStatusUnknown: {
-                                        NSDictionary *error = [errorCodes valueForKey:kErrorKeySourceStatusUnknown];
+                                        NSDictionary *error = [self->errorCodes valueForKey:kErrorKeySourceStatusUnknown];
                                         reject(error[kErrorKeyCode], error[kErrorKeyDescription], nil);
                                     }
                                         break;
@@ -367,7 +627,7 @@ RCT_EXPORT_METHOD(createSourceWithParams:(NSDictionary *)params
                 }];
                 [self.redirectContext startSafariAppRedirectFlow];
             } else {
-                resolve([self convertSourceObject:source]);
+                resolve([RCTConvert STPSourceDictionary:source]);
             }
         }
     }];
@@ -496,36 +756,16 @@ RCT_EXPORT_METHOD(openApplePaySetup) {
 
 #pragma mark - Private
 
-- (STPCardParams *)createCard:(NSDictionary *)params {
-    STPCardParams *cardParams = [[STPCardParams alloc] init];
-
-    [cardParams setNumber: params[@"number"]];
-    [cardParams setExpMonth: [params[@"expMonth"] integerValue]];
-    [cardParams setExpYear: [params[@"expYear"] integerValue]];
-    [cardParams setCvc: params[@"cvc"]];
-
-    [cardParams setCurrency: params[@"currency"]];
-    [cardParams setName: params[@"name"]];
-    [cardParams setAddressLine1: params[@"addressLine1"]];
-    [cardParams setAddressLine2: params[@"addressLine2"]];
-    [cardParams setAddressCity: params[@"addressCity"]];
-    [cardParams setAddressState: params[@"addressState"]];
-    [cardParams setAddressCountry: params[@"addressCountry"]];
-    [cardParams setAddressZip: params[@"addressZip"]];
-
-    return cardParams;
-}
-
-- (STPPaymentMethodCardParams *)createCardWithPaymentMethod:(NSDictionary *)params {
-    STPPaymentMethodCardParams *cardParams = [STPPaymentMethodCardParams new];
-
-    [cardParams setNumber: params[@"number"]];
-    [cardParams setExpMonth: params[@"expMonth"]];
-    [cardParams setExpYear: params[@"expYear"]];
-    [cardParams setCvc: params[@"cvc"]];
-
-    return cardParams;
-}
+//- (STPPaymentMethodCardParams *)createCardWithPaymentMethod:(NSDictionary *)params {
+//    STPPaymentMethodCardParams *cardParams = [STPPaymentMethodCardParams new];
+//
+//    [cardParams setNumber: params[@"number"]];
+//    [cardParams setExpMonth: params[@"expMonth"]];
+//    [cardParams setExpYear: params[@"expYear"]];
+//    [cardParams setCvc: params[@"cvc"]];
+//
+//    return cardParams;
+//}
 
 - (void)resolvePromise:(id)result {
     if (promiseResolver) {
@@ -591,7 +831,7 @@ RCT_EXPORT_METHOD(openApplePaySetup) {
 
     requestIsCompleted = YES;
     completion(nil);
-    [self resolvePromise:[self convertTokenObject:token]];
+    [self resolvePromise:[RCTConvert STPTokenDictionary:token]];
 }
 
 - (void)addCardViewController:(STPAddCardViewController *)controller
@@ -601,7 +841,7 @@ RCT_EXPORT_METHOD(openApplePaySetup) {
 
     requestIsCompleted = YES;
     completion(nil);
-    [self resolvePromise:[self convertSourceObject:source]];
+    [self resolvePromise:[RCTConvert STPSourceDictionary:source]];
 }
 
 - (void)addCardViewControllerDidCancel:(STPAddCardViewController *)addCardViewController {
@@ -626,14 +866,14 @@ RCT_EXPORT_METHOD(openApplePaySetup) {
     STPAPIClient *stripeAPIClient = [self newAPIClient];
 
     [stripeAPIClient createTokenWithPayment:payment completion:^(STPToken * _Nullable token, NSError * _Nullable error) {
-        requestIsCompleted = YES;
+        self->requestIsCompleted = YES;
 
         if (error) {
             // Save for deffered use
-            applePayStripeError = error;
+            self->applePayStripeError = error;
             [self resolveApplePayCompletion:PKPaymentAuthorizationStatusFailure];
         } else {
-            NSDictionary *result = [self convertTokenObject:token];
+            NSDictionary *result = [RCTConvert STPTokenDictionary:token];
             NSDictionary *extra = @{
                 @"billingContact": [self contactDetails:payment.billingContact] ?: [NSNull null],
                 @"shippingContact": [self contactDetails:payment.shippingContact] ?: [NSNull null],
@@ -651,16 +891,16 @@ RCT_EXPORT_METHOD(openApplePaySetup) {
 - (void)paymentAuthorizationViewControllerDidFinish:(PKPaymentAuthorizationViewController *)controller {
     [self resetApplePayCallback];
 
-    void(^completion)() = ^{
-        if (!requestIsCompleted) {
-            requestIsCompleted = YES;
-            NSDictionary *error = [errorCodes valueForKey:kErrorKeyCancelled];
+    void(^completion)(void) = ^{
+        if (!self->requestIsCompleted) {
+            self->requestIsCompleted = YES;
+            NSDictionary *error = [self->errorCodes valueForKey:kErrorKeyCancelled];
             [self rejectPromiseWithCode:error[kErrorKeyCode] message:error[kErrorKeyDescription]];
         } else {
-            if (applePayStripeError) {
-                NSDictionary *error = [errorCodes valueForKey:kErrorKeyApi];
-                [self rejectPromiseWithCode:error[kErrorKeyCode] message:applePayStripeError.localizedDescription];
-                applePayStripeError = nil;
+            if (self->applePayStripeError) {
+                NSDictionary *error = [self->errorCodes valueForKey:kErrorKeyApi];
+                [self rejectPromiseWithCode:error[kErrorKeyCode] message:self->applePayStripeError.localizedDescription];
+                self->applePayStripeError = nil;
             } else {
                 [self resolvePromise:nil];
             }
@@ -672,346 +912,6 @@ RCT_EXPORT_METHOD(openApplePaySetup) {
 
 - (STPAPIClient *)newAPIClient {
     return [[STPAPIClient alloc] initWithPublishableKey:[Stripe defaultPublishableKey]];
-}
-
-- (NSDictionary *)convertTokenObject:(STPToken*)token {
-    NSMutableDictionary *result = [@{} mutableCopy];
-
-    // Token
-    [result setValue:token.tokenId forKey:@"tokenId"];
-    [result setValue:@([token.created timeIntervalSince1970]) forKey:@"created"];
-    [result setValue:@(token.livemode) forKey:@"livemode"];
-
-    // Card
-    if (token.card) {
-        NSMutableDictionary *card = [@{} mutableCopy];
-        [result setValue:card forKey:@"card"];
-
-        [card setValue:token.card.stripeID forKey:@"cardId"];
-
-        [card setValue:[self cardBrand:token.card.brand] forKey:@"brand"];
-        [card setValue:[self cardFunding:token.card.funding] forKey:@"funding"];
-        [card setValue:token.card.last4 forKey:@"last4"];
-        [card setValue:token.card.dynamicLast4 forKey:@"dynamicLast4"];
-        [card setValue:@(token.card.isApplePayCard) forKey:@"isApplePayCard"];
-        [card setValue:@(token.card.expMonth) forKey:@"expMonth"];
-        [card setValue:@(token.card.expYear) forKey:@"expYear"];
-        [card setValue:token.card.country forKey:@"country"];
-        [card setValue:token.card.currency forKey:@"currency"];
-
-        [card setValue:token.card.name forKey:@"name"];
-        [card setValue:token.card.address.line1 forKey:@"addressLine1"];
-        [card setValue:token.card.address.line2 forKey:@"addressLine2"];
-        [card setValue:token.card.address.city forKey:@"addressCity"];
-        [card setValue:token.card.address.state forKey:@"addressState"];
-        [card setValue:token.card.address.country forKey:@"addressCountry"];
-        [card setValue:token.card.address.postalCode forKey:@"addressZip"];
-    }
-
-    // Bank Account
-    if (token.bankAccount) {
-        NSMutableDictionary *bankAccount = [@{} mutableCopy];
-        [result setValue:bankAccount forKey:@"bankAccount"];
-
-        NSString *bankAccountStatusString =
-        [RCTConvert STPBankAccountStatusString:token.bankAccount.status];
-        [bankAccount setValue:bankAccountStatusString forKey:@"status"];
-        [bankAccount setValue:token.bankAccount.country forKey:@"countryCode"];
-        [bankAccount setValue:token.bankAccount.currency forKey:@"currency"];
-        [bankAccount setValue:token.bankAccount.stripeID forKey:@"bankAccountId"];
-        [bankAccount setValue:token.bankAccount.bankName forKey:@"bankName"];
-        [bankAccount setValue:token.bankAccount.last4 forKey:@"last4"];
-        [bankAccount setValue:token.bankAccount.accountHolderName forKey:@"accountHolderName"];
-        NSString *bankAccountHolderTypeString =
-        [RCTConvert STPBankAccountHolderTypeString:token.bankAccount.accountHolderType];
-        [bankAccount setValue:bankAccountHolderTypeString forKey:@"accountHolderType"];
-    }
-
-    return result;
-}
-
-- (NSDictionary *)convertPaymentMethodObject:(STPPaymentMethod*)paymentMethod {
-    NSMutableDictionary *result = [@{} mutableCopy];
-
-    // Token
-    [result setValue:paymentMethod.stripeId forKey:@"tokenId"]; // TODO: change to paymentMethodId??
-    [result setValue:@([paymentMethod.created timeIntervalSince1970]) forKey:@"created"];
-
-    [result setValue:@(paymentMethod.liveMode) forKey:@"livemode"];
-
-    // Card
-    if (paymentMethod.card) {
-        NSMutableDictionary *card = [@{} mutableCopy];
-        [result setValue:card forKey:@"card"];
-        [card setValue:[self cardBrand:paymentMethod.card.brand] forKey:@"brand"];
-        if (paymentMethod.card.funding) {
-            [card setValue:paymentMethod.card.funding forKey:@"funding"];
-        }
-        [card setValue:paymentMethod.card.last4 forKey:@"last4"];
-        [card setValue:@(paymentMethod.card.expMonth) forKey:@"expMonth"];
-        [card setValue:@(paymentMethod.card.expYear) forKey:@"expYear"];
-        [card setValue:paymentMethod.card.country forKey:@"country"];
-    }
-
-    return result;
-}
-
-- (NSDictionary *)convertSourceObject:(STPSource*)source {
-    NSMutableDictionary *result = [@{} mutableCopy];
-
-    // Source
-    [result setValue:source.clientSecret forKey:@"clientSecret"];
-    [result setValue:@([source.created timeIntervalSince1970]) forKey:@"created"];
-    [result setValue:source.currency forKey:@"currency"];
-    [result setValue:@(source.livemode) forKey:@"livemode"];
-    [result setValue:source.amount forKey:@"amount"];
-    [result setValue:source.stripeID forKey:@"sourceId"];
-
-    // Flow
-    [result setValue:[self sourceFlow:source.flow] forKey:@"flow"];
-
-    // Metadata
-    if (source.metadata) {
-        [result setValue:source.metadata forKey:@"metadata"];
-    }
-
-    // Owner
-    if (source.owner) {
-        NSMutableDictionary *owner = [@{} mutableCopy];
-        [result setValue:owner forKey:@"owner"];
-
-        if (source.owner.address) {
-            [owner setObject:source.owner.address forKey:@"address"];
-        }
-        [owner setValue:source.owner.email forKey:@"email"];
-        [owner setValue:source.owner.name forKey:@"name"];
-        [owner setValue:source.owner.phone forKey:@"phone"];
-
-        if (source.owner.verifiedAddress) {
-            [owner setObject:source.owner.verifiedAddress forKey:@"verifiedAddress"];
-        }
-        [owner setValue:source.owner.verifiedEmail forKey:@"verifiedEmail"];
-        [owner setValue:source.owner.verifiedName forKey:@"verifiedName"];
-        [owner setValue:source.owner.verifiedPhone forKey:@"verifiedPhone"];
-    }
-
-    // Details
-    if (source.details) {
-        [result setValue:source.details forKey:@"details"];
-    }
-
-    // Receiver
-    if (source.receiver) {
-        NSMutableDictionary *receiver = [@{} mutableCopy];
-        [result setValue:receiver forKey:@"receiver"];
-
-        [receiver setValue:source.receiver.address forKey:@"address"];
-        [receiver setValue:source.receiver.amountCharged forKey:@"amountCharged"];
-        [receiver setValue:source.receiver.amountReceived forKey:@"amountReceived"];
-        [receiver setValue:source.receiver.amountReturned forKey:@"amountReturned"];
-    }
-
-    // Redirect
-    if (source.redirect) {
-        NSMutableDictionary *redirect = [@{} mutableCopy];
-        [result setValue:redirect forKey:@"redirect"];
-        NSString *returnURL = source.redirect.returnURL.absoluteString;
-        [redirect setValue:returnURL forKey:@"returnURL"];
-        NSString *url = source.redirect.url.absoluteString;
-        [redirect setValue:url forKey:@"url"];
-        [redirect setValue:[self sourceRedirectStatus:source.redirect.status] forKey:@"status"];
-    }
-
-    // Verification
-    if (source.verification) {
-        NSMutableDictionary *verification = [@{} mutableCopy];
-        [result setValue:verification forKey:@"verification"];
-
-        [verification setValue:source.verification.attemptsRemaining forKey:@"attemptsRemaining"];
-        [verification setValue:[self sourceVerificationStatus:source.verification.status] forKey:@"status"];
-    }
-
-    // Status
-    [result setValue:[self sourceStatus:source.status] forKey:@"status"];
-
-    // Type
-    [result setValue:[self sourceType:source.type] forKey:@"type"];
-
-    // Usage
-    [result setValue:[self sourceUsage:source.usage] forKey:@"usage"];
-
-    // CardDetails
-    if (source.cardDetails) {
-        NSMutableDictionary *cardDetails = [@{} mutableCopy];
-        [result setValue:cardDetails forKey:@"cardDetails"];
-
-        [cardDetails setValue:source.cardDetails.last4 forKey:@"last4"];
-        [cardDetails setValue:@(source.cardDetails.expMonth) forKey:@"expMonth"];
-        [cardDetails setValue:@(source.cardDetails.expYear) forKey:@"expYear"];
-        [cardDetails setValue:[self cardBrand:source.cardDetails.brand] forKey:@"brand"];
-        [cardDetails setValue:[self cardFunding:source.cardDetails.funding] forKey:@"funding"];
-        [cardDetails setValue:source.cardDetails.country forKey:@"country"];
-        [cardDetails setValue:[self card3DSecureStatus:source.cardDetails.threeDSecure] forKey:@"threeDSecure"];
-    }
-
-    // SepaDebitDetails
-    if (source.sepaDebitDetails) {
-        NSMutableDictionary *sepaDebitDetails = [@{} mutableCopy];
-        [result setValue:sepaDebitDetails forKey:@"sepaDebitDetails"];
-
-        [sepaDebitDetails setValue:source.sepaDebitDetails.last4 forKey:@"last4"];
-        [sepaDebitDetails setValue:source.sepaDebitDetails.bankCode forKey:@"bankCode"];
-        [sepaDebitDetails setValue:source.sepaDebitDetails.country forKey:@"country"];
-        [sepaDebitDetails setValue:source.sepaDebitDetails.fingerprint forKey:@"fingerprint"];
-        [sepaDebitDetails setValue:source.sepaDebitDetails.mandateReference forKey:@"mandateReference"];
-        NSString *mandateURL = source.sepaDebitDetails.mandateURL.absoluteString;
-        [sepaDebitDetails setValue:mandateURL forKey:@"mandateURL"];
-    }
-
-    return result;
-}
-
-- (NSString *)cardBrand:(STPCardBrand)inputBrand {
-    switch (inputBrand) {
-        case STPCardBrandJCB:
-            return @"JCB";
-        case STPCardBrandAmex:
-            return @"American Express";
-        case STPCardBrandVisa:
-            return @"Visa";
-        case STPCardBrandDiscover:
-            return @"Discover";
-        case STPCardBrandDinersClub:
-            return @"Diners Club";
-        case STPCardBrandMasterCard:
-            return @"MasterCard";
-        default:
-            return @"Unknown";
-    }
-}
-
-- (NSString *)cardFunding:(STPCardFundingType)inputFunding {
-    switch (inputFunding) {
-        case STPCardFundingTypeDebit:
-            return @"debit";
-        case STPCardFundingTypeCredit:
-            return @"credit";
-        case STPCardFundingTypePrepaid:
-            return @"prepaid";
-        case STPCardFundingTypeOther:
-        default:
-            return @"unknown";
-    }
-}
-
-- (NSString *)card3DSecureStatus:(STPSourceCard3DSecureStatus)inputStatus {
-    switch (inputStatus) {
-        case STPSourceCard3DSecureStatusRequired:
-            return @"required";
-        case STPSourceCard3DSecureStatusOptional:
-            return @"optional";
-        case STPSourceCard3DSecureStatusNotSupported:
-            return @"notSupported";
-        case STPSourceCard3DSecureStatusUnknown:
-        default:
-            return @"unknown";
-    }
-}
-
-- (NSString *)sourceFlow:(STPSourceFlow)inputFlow {
-    switch (inputFlow) {
-        case STPSourceFlowNone:
-            return @"none";
-        case STPSourceFlowRedirect:
-            return @"redirect";
-        case STPSourceFlowCodeVerification:
-            return @"codeVerification";
-        case STPSourceFlowReceiver:
-            return @"receiver";
-        case STPSourceFlowUnknown:
-        default:
-            return @"unknown";
-    }
-}
-
-- (NSString *)sourceRedirectStatus:(STPSourceRedirectStatus)inputStatus {
-    switch (inputStatus) {
-        case STPSourceRedirectStatusPending:
-            return @"pending";
-        case STPSourceRedirectStatusSucceeded:
-            return @"succeeded";
-        case STPSourceRedirectStatusFailed:
-            return @"failed";
-        case STPSourceRedirectStatusUnknown:
-        default:
-            return @"unknown";
-    }
-}
-
-- (NSString *)sourceVerificationStatus:(STPSourceVerificationStatus)inputStatus {
-    switch (inputStatus) {
-        case STPSourceVerificationStatusPending:
-            return @"pending";
-        case STPSourceVerificationStatusSucceeded:
-            return @"succeeded";
-        case STPSourceVerificationStatusFailed:
-            return @"failed";
-        case STPSourceVerificationStatusUnknown:
-        default:
-            return @"unknown";
-    }
-}
-
-- (NSString *)sourceStatus:(STPSourceStatus)inputStatus {
-    switch (inputStatus) {
-        case STPSourceStatusPending:
-            return @"pending";
-        case STPSourceStatusChargeable:
-            return @"chargable";
-        case STPSourceStatusConsumed:
-            return @"consumed";
-        case STPSourceStatusCanceled:
-            return @"canceled";
-        case STPSourceStatusFailed:
-            return @"failed";
-        case STPSourceStatusUnknown:
-        default:
-            return @"unknown";
-    }
-}
-
-- (NSString *)sourceType:(STPSourceType)inputType {
-    switch (inputType) {
-        case STPSourceTypeBancontact:
-            return @"bancontact";
-        case STPSourceTypeGiropay:
-            return @"giropay";
-        case STPSourceTypeIDEAL:
-            return @"ideal";
-        case STPSourceTypeSEPADebit:
-            return @"sepaDebit";
-        case STPSourceTypeSofort:
-            return @"sofort";
-        case STPSourceTypeThreeDSecure:
-            return @"threeDSecure";
-        case STPSourceTypeAlipay:
-            return @"alipay";
-        case STPSourceTypeUnknown:
-        default:
-            return @"unknown";
-    }
-}
-
-- (NSString *)sourceUsage:(STPSourceUsage)inputUsage {
-    switch (inputUsage) {
-        case STPSourceUsageReusable:
-            return @"reusable";
-        case STPSourceUsageSingleUse:
-            return @"singleUse";
-        case STPSourceUsageUnknown:
-        default:
-            return @"unknown";
-    }
 }
 
 - (NSDictionary *)contactDetails:(PKContact*)inputContact {
