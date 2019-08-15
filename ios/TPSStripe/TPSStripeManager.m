@@ -865,7 +865,7 @@ RCT_EXPORT_METHOD(openApplePaySetup) {
 
     STPAPIClient *stripeAPIClient = [self newAPIClient];
 
-    [stripeAPIClient createTokenWithPayment:payment completion:^(STPToken * _Nullable token, NSError * _Nullable error) {
+    [stripeAPIClient createPaymentMethodWithPayment:payment completion:^(STPPaymentMethod * _Nullable paymentMethod, NSError * _Nullable error) {
         self->requestIsCompleted = YES;
 
         if (error) {
@@ -873,7 +873,7 @@ RCT_EXPORT_METHOD(openApplePaySetup) {
             self->applePayStripeError = error;
             [self resolveApplePayCompletion:PKPaymentAuthorizationStatusFailure];
         } else {
-            NSDictionary *result = [RCTConvert STPTokenDictionary:token];
+            NSDictionary *result = [RCTConvert STPPaymentMethodDictionary:paymentMethod];
             NSDictionary *extra = @{
                 @"billingContact": [self contactDetails:payment.billingContact] ?: [NSNull null],
                 @"shippingContact": [self contactDetails:payment.shippingContact] ?: [NSNull null],
