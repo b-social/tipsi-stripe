@@ -486,49 +486,49 @@ RCT_EXPORT_METHOD(createSourceWithParams:(NSDictionary *)params
     }];
 }
 
-RCT_EXPORT_METHOD(paymentRequestWithCardForm:(NSDictionary *)options
-                                    resolver:(RCTPromiseResolveBlock)resolve
-                                    rejecter:(RCTPromiseRejectBlock)reject) {
-    if(!requestIsCompleted) {
-        NSDictionary *error = [errorCodes valueForKey:kErrorKeyBusy];
-        reject(error[kErrorKeyCode], error[kErrorKeyDescription], nil);
-        return;
-    }
-
-    requestIsCompleted = NO;
-    // Save promise handlers to use in `paymentAuthorizationViewController`
-    promiseResolver = resolve;
-    promiseRejector = reject;
-
-    STPBillingAddressFields requiredBillingAddressFields = [RCTConvert STPBillingAddressFields:options[@"requiredBillingAddressFields"]];
-    NSString *companyName = options[@"companyName"] ? options[@"companyName"] : @"";
-    STPUserInformation *prefilledInformation = [RCTConvert STPUserInformation:options[@"prefilledInformation"]];
-    NSString *managedAccountCurrency = options[@"managedAccountCurrency"];
-    NSString *nextPublishableKey = options[@"publishableKey"] ? options[@"publishableKey"] : publishableKey;
-    UIModalPresentationStyle formPresentation = [self formPresentation:options[@"presentation"]];
-    STPTheme *theme = [RCTConvert STPTheme:options[@"theme"]];
-
-    STPPaymentConfiguration *configuration = [[STPPaymentConfiguration alloc] init];
-    [configuration setRequiredBillingAddressFields:requiredBillingAddressFields];
-    [configuration setCompanyName:companyName];
-    [configuration setPublishableKey:nextPublishableKey];
-    [configuration setCreateCardSources:options[@"createCardSource"] ? options[@"createCardSource"] : false];
-
-    STPAddCardViewController *addCardViewController = [[STPAddCardViewController alloc] initWithConfiguration:configuration theme:theme];
-    [addCardViewController setDelegate:self];
-    [addCardViewController setPrefilledInformation:prefilledInformation];
-    [addCardViewController setManagedAccountCurrency:managedAccountCurrency];
-    // STPAddCardViewController must be shown inside a UINavigationController.
-    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:addCardViewController];
-    [navigationController setModalPresentationStyle:formPresentation];
-    navigationController.navigationBar.stp_theme = theme;
-    // move to the end of main queue
-    // allow the execution of hiding modal
-    // to be finished first
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [RCTPresentedViewController() presentViewController:navigationController animated:YES completion:nil];
-    });
-}
+//RCT_EXPORT_METHOD(paymentRequestWithCardForm:(NSDictionary *)options
+//                                    resolver:(RCTPromiseResolveBlock)resolve
+//                                    rejecter:(RCTPromiseRejectBlock)reject) {
+//    if(!requestIsCompleted) {
+//        NSDictionary *error = [errorCodes valueForKey:kErrorKeyBusy];
+//        reject(error[kErrorKeyCode], error[kErrorKeyDescription], nil);
+//        return;
+//    }
+//
+//    requestIsCompleted = NO;
+//    // Save promise handlers to use in `paymentAuthorizationViewController`
+//    promiseResolver = resolve;
+//    promiseRejector = reject;
+//
+//    STPBillingAddressFields requiredBillingAddressFields = [RCTConvert STPBillingAddressFields:options[@"requiredBillingAddressFields"]];
+//    NSString *companyName = options[@"companyName"] ? options[@"companyName"] : @"";
+//    STPUserInformation *prefilledInformation = [RCTConvert STPUserInformation:options[@"prefilledInformation"]];
+//    NSString *managedAccountCurrency = options[@"managedAccountCurrency"];
+//    NSString *nextPublishableKey = options[@"publishableKey"] ? options[@"publishableKey"] : publishableKey;
+//    UIModalPresentationStyle formPresentation = [self formPresentation:options[@"presentation"]];
+//    STPTheme *theme = [RCTConvert STPTheme:options[@"theme"]];
+//
+//    STPPaymentConfiguration *configuration = [[STPPaymentConfiguration alloc] init];
+//    [configuration setRequiredBillingAddressFields:requiredBillingAddressFields];
+//    [configuration setCompanyName:companyName];
+//    [configuration setPublishableKey:nextPublishableKey];
+//    [configuration setCreateCardSources:options[@"createCardSource"] ? options[@"createCardSource"] : false];
+//
+//    STPAddCardViewController *addCardViewController = [[STPAddCardViewController alloc] initWithConfiguration:configuration theme:theme];
+//    [addCardViewController setDelegate:self];
+//    [addCardViewController setPrefilledInformation:prefilledInformation];
+//    [addCardViewController setManagedAccountCurrency:managedAccountCurrency];
+//    // STPAddCardViewController must be shown inside a UINavigationController.
+//    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:addCardViewController];
+//    [navigationController setModalPresentationStyle:formPresentation];
+//    navigationController.navigationBar.stp_theme = theme;
+//    // move to the end of main queue
+//    // allow the execution of hiding modal
+//    // to be finished first
+//    dispatch_async(dispatch_get_main_queue(), ^{
+//        [RCTPresentedViewController() presentViewController:navigationController animated:YES completion:nil];
+//    });
+//}
 
 RCT_EXPORT_METHOD(paymentRequestWithApplePay:(NSArray *)items
                                     withOptions:(NSDictionary *)options
