@@ -97,6 +97,11 @@ class Stripe {
     return StripeModule.completeApplePayRequest()
   }
 
+  confirmPaymentIntent = (clientSecret) => {
+    checkInit(this)
+    return StripeModule.confirmPaymentIntent(clientSecret)
+  }
+
   // no corresponding android impl exists
   completeNativePayRequest = () => (
     Platform.select({

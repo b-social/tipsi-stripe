@@ -307,6 +307,30 @@ RCT_EXPORT_METHOD(completeApplePayRequest:(RCTPromiseResolveBlock)resolve
     }
 }
 
+RCT_EXPORT_METHOD(confirmPaymentIntent:(NSString*)clientSecret
+                  resolver:(RCTPromiseResolveBlock)resolve
+                  rejecter:(RCTPromiseRejectBlock)reject) {
+    STPPaymentIntentParams *paymentIntentParams = [[STPPaymentIntentParams alloc] initWithClientSecret:clientSecret];
+
+    [[STPPaymentHandler sharedHandler] confirmPayment:paymentIntentParams withAuthenticationContext:self completion:^(STPPaymentHandlerActionStatus status, STPPaymentIntent * _Nullable paymentIntent, NSError * _Nullable error) {
+        switch (status) {
+            case STPPaymentHandlerActionStatusSucceeded:
+                resolve(nil);
+                break;
+            case STPPaymentHandlerActionStatusCanceled: {
+                NSDictionary *jsError = [self->errorCodes valueForKey:kErrorKeyApi];
+                reject(jsError[kErrorKeyCode], error.localizedDescription, nil);
+                break;
+            }
+            case STPPaymentHandlerActionStatusFailed: {
+                // TODO: If Code=50 resolve(), otherwise reject();
+                resolve(nil);
+                break;
+            }
+        }
+    }];
+}
+
 RCT_EXPORT_METHOD(cancelApplePayRequest:(RCTPromiseResolveBlock)resolve
                                 rejecter:(RCTPromiseRejectBlock)reject) {
     if (applePayCompletion) {
@@ -750,6 +774,32 @@ RCT_EXPORT_METHOD(openApplePaySetup) {
     };
 
     [RCTPresentedViewController() dismissViewControllerAnimated:YES completion:completion];
+}
+
+#pragma mark - STPAuthenticationContext
+
+- (UIViewController *)authenticationPresentingViewController {
+    return RCTPresentedViewController();
+}
+
+- (void)prepareAuthenticationContextForPresentation:(STPVoidBlock)completion {
+  [self resetApplePayCallback];
+
+  [RCTPresentedViewController() dismissViewControllerAnimated:YES completion:^{
+      if (!self->requestIsCompleted) {
+        self->requestIsCompleted = YES;
+        NSDictionary *error = [self->errorCodes valueForKey:kErrorKeyCancelled];
+        [self rejectPromiseWithCode:error[kErrorKeyCode] message:error[kErrorKeyDescription]];
+      } else {
+        if (self->applePayStripeError) {
+          NSDictionary *error = [self->errorCodes valueForKey:kErrorKeyApi];
+          [self rejectPromiseWithCode:error[kErrorKeyCode] message:self->applePayStripeError.localizedDescription];
+          self->applePayStripeError = nil;
+        } else {
+          [self resolvePromise:nil];
+        }
+      }
+    }];
 }
 
 - (STPAPIClient *)newAPIClient {
