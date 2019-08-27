@@ -47,23 +47,23 @@ NSString * const TPSPaymentNetworkVisa = @"visa";
 
 + (NSDictionary *)PKContactDictionary:(PKContact*)inputContact {
     NSMutableDictionary *contactDetails = [[NSMutableDictionary alloc] init];
-    
+
     if (inputContact.name) {
         [contactDetails setValue:[NSPersonNameComponentsFormatter localizedStringFromPersonNameComponents:inputContact.name style:NSPersonNameComponentsFormatterStyleDefault options:0] forKey:@"name"];
     }
-    
+
     if (inputContact.phoneNumber) {
         [contactDetails setValue:[inputContact.phoneNumber stringValue] forKey:@"phoneNumber"];
     }
-    
+
     if (inputContact.emailAddress) {
         [contactDetails setValue:inputContact.emailAddress forKey:@"emailAddress"];
     }
-    
+
     if (inputContact.supplementarySubLocality) {
         [contactDetails setValue:inputContact.supplementarySubLocality forKey:@"supplementarySubLocality"];
     }
-    
+
     for (NSString *elem in @[@"street", @"city", @"state", @"country", @"ISOCountryCode", @"postalCode"]) {
         if ([inputContact.postalAddress respondsToSelector:NSSelectorFromString(elem)]) {
             [contactDetails setValue:[inputContact.postalAddress valueForKey:elem] forKey:elem];
@@ -72,7 +72,7 @@ NSString * const TPSPaymentNetworkVisa = @"visa";
     if ([contactDetails count] == 0) {
         return nil;
     }
-    
+
     return contactDetails;
 }
 
@@ -82,29 +82,29 @@ NSString * const TPSPaymentNetworkVisa = @"visa";
 
 + (NSDictionary *)PKShippingMethodDictionary:(PKShippingMethod*)inputShipping {
     NSMutableDictionary *shippingDetails = [[NSMutableDictionary alloc] init];
-    
+
     if (inputShipping.label) {
         [shippingDetails setValue:inputShipping.label forKey:@"label"];
     }
-    
+
     if (inputShipping.amount) {
         NSNumberFormatter* numberFormatter = [NSNumberFormatter new];
         [numberFormatter setPositiveFormat:@"$0.00"];
         [shippingDetails setValue:[numberFormatter stringFromNumber: inputShipping.amount] forKey:@"amount"];
     }
-    
+
     if (inputShipping.detail) {
         [shippingDetails setValue:inputShipping.detail forKey:@"detail"];
     }
-    
+
     if (inputShipping.identifier) {
         [shippingDetails setValue:inputShipping.identifier forKey:@"id"];
     }
-    
+
     if ([shippingDetails count] == 0) {
         return nil;
     }
-    
+
     return shippingDetails;
 }
 
@@ -125,7 +125,7 @@ NSString * const TPSPaymentNetworkVisa = @"visa";
     if ([paymentNetworkString isEqualToString:TPSPaymentNetworkVisa]) {
         return PKPaymentNetworkVisa;
     }
-    
+
     return nil;
 }
 
@@ -173,7 +173,7 @@ NSString * const TPSPaymentNetworkVisa = @"visa";
 
 + (STPAddress *)STPAddress:(NSDictionary*)inputAddress {
     STPAddress *address = [[STPAddress alloc] init];
-    
+
     [address setName:inputAddress[@"name"]];
     [address setLine1:inputAddress[@"line1"]];
     [address setLine2:inputAddress[@"line2"]];
@@ -183,7 +183,7 @@ NSString * const TPSPaymentNetworkVisa = @"visa";
     [address setCountry:inputAddress[@"country"]];
     [address setPhone:inputAddress[@"phone"]];
     [address setEmail:inputAddress[@"email"]];
-    
+
     return address;
 }
 @end
@@ -192,10 +192,10 @@ NSString * const TPSPaymentNetworkVisa = @"visa";
 
 + (STPUserInformation *)STPUserInformation:(NSDictionary*)inputInformation {
     STPUserInformation *userInformation = [[STPUserInformation alloc] init];
-    
+
     [userInformation setBillingAddress: [RCTConvert STPAddress:inputInformation[@"billingAddress"]]];
     [userInformation setShippingAddress: [RCTConvert STPAddress:inputInformation[@"shippingAddress"]]];
-    
+
     return userInformation;
 }
 
@@ -205,7 +205,7 @@ NSString * const TPSPaymentNetworkVisa = @"visa";
 
 + (STPTheme *)STPTheme:(NSDictionary*)options {
     STPTheme *theme = [[STPTheme alloc] init];
-    
+
     [theme setPrimaryBackgroundColor:[RCTConvert UIColor:options[@"primaryBackgroundColor"]]];
     [theme setSecondaryBackgroundColor:[RCTConvert UIColor:options[@"secondaryBackgroundColor"]]];
     [theme setPrimaryForegroundColor:[RCTConvert UIColor:options[@"primaryForegroundColor"]]];
@@ -214,7 +214,7 @@ NSString * const TPSPaymentNetworkVisa = @"visa";
     [theme setErrorColor:[RCTConvert UIColor:options[@"errorColor"]]];
     [theme setErrorColor:[RCTConvert UIColor:options[@"errorColor"]]];
     // TODO: process font vars
-    
+
     return theme;
 }
 @end
@@ -232,7 +232,7 @@ NSString * const TPSPaymentNetworkVisa = @"visa";
     if ([inputType isEqualToString:@"service_pickup"]) {
         shippingType = PKShippingTypeServicePickup;
     }
-    
+
     return shippingType;
 }
 
@@ -312,7 +312,9 @@ RCT_EXPORT_METHOD(confirmPaymentIntent:(NSString*)clientSecret
                   rejecter:(RCTPromiseRejectBlock)reject) {
     STPPaymentIntentParams *paymentIntentParams = [[STPPaymentIntentParams alloc] initWithClientSecret:clientSecret];
 
-    [[STPPaymentHandler sharedHandler] confirmPayment:paymentIntentParams withAuthenticationContext:self completion:^(STPPaymentHandlerActionStatus status, STPPaymentIntent * _Nullable paymentIntent, NSError * _Nullable error) {
+    [[STPPaymentHandler sharedHandler] confirmPayment:paymentIntentParams
+                            withAuthenticationContext:self
+                                           completion:^(STPPaymentHandlerActionStatus status, STPPaymentIntent * _Nullable paymentIntent, NSError * _Nullable error) {
         switch (status) {
             case STPPaymentHandlerActionStatusSucceeded:
                 resolve(nil);
