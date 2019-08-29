@@ -1,13 +1,8 @@
-//
-//  RCTConvert+STPBillingAddressFields .h
-//  TPSStripe
-//
-//  Created by Ayman Osman on 15/08/2019.
-//  Copyright © 2019 Tipsi. All rights reserved.
-//
+#import <React/RCTConvert.h>
+#import <Stripe.h>
 
-#ifndef RCTConvert_STPBillingAddressFields__h
-#define RCTConvert_STPBillingAddressFields__h
+@interface RCTConvert (STPBillingAddressFields)
 
++ (STPBillingAddressFields)STPBillingAddressFields:(NSString*)inputType;
 
-#endif /* RCTConvert_STPBillingAddressFields__h */
+@end

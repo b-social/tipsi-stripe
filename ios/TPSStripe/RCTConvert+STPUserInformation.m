@@ -1,9 +1,15 @@
-//
-//  RCTConvert+STPUserInformation.m
-//  TPSStripe
-//
-//  Created by Ayman Osman on 15/08/2019.
-//  Copyright © 2019 Tipsi. All rights reserved.
-//
+#import "RCTConvert+STPAddress.h"
+#import "RCTConvert+STPUserInformation.h"
 
-#import <Foundation/Foundation.h>
+@implementation RCTConvert (STPUserInformation)
+
++ (STPUserInformation *)STPUserInformation:(NSDictionary*)inputInformation {
+    STPUserInformation *userInformation = [[STPUserInformation alloc] init];
+    
+    [userInformation setBillingAddress: [RCTConvert STPAddress:inputInformation[@"billingAddress"]]];
+    [userInformation setShippingAddress: [RCTConvert STPAddress:inputInformation[@"shippingAddress"]]];
+    
+    return userInformation;
+}
+
+@end

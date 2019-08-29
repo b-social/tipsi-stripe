@@ -1,9 +1,15 @@
-//
-//  RCTConvert+STPBillingAddressFields.m
-//  TPSStripe
-//
-//  Created by Ayman Osman on 15/08/2019.
-//  Copyright © 2019 Tipsi. All rights reserved.
-//
+#import "RCTConvert+STPBillingAddressFields .h"
 
-#import <Foundation/Foundation.h>
+@implementation RCTConvert (STPBillingAddressFields)
+
++ (STPBillingAddressFields)STPBillingAddressFields:(NSString*)inputType {
+    if ([inputType isEqualToString:@"zip"]) {
+        return STPBillingAddressFieldsZip;
+    }
+    if ([inputType isEqualToString:@"full"]) {
+        return STPBillingAddressFieldsFull;
+    }
+    return STPBillingAddressFieldsNone;
+}
+
+@end

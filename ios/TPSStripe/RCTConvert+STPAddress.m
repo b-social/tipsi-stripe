@@ -1,9 +1,20 @@
-//
-//  RCTConvert+STPAddress.m
-//  TPSStripe
-//
-//  Created by Ayman Osman on 15/08/2019.
-//  Copyright © 2019 Tipsi. All rights reserved.
-//
+#import "RCTConvert+STPAddress.h"
 
-#import <Foundation/Foundation.h>
+@implementation RCTConvert (STPAddress)
+
++ (STPAddress *)STPAddress:(NSDictionary*)inputAddress {
+    STPAddress *address = [[STPAddress alloc] init];
+    
+    [address setName:inputAddress[@"name"]];
+    [address setLine1:inputAddress[@"line1"]];
+    [address setLine2:inputAddress[@"line2"]];
+    [address setCity:inputAddress[@"city"]];
+    [address setState:inputAddress[@"state"]];
+    [address setPostalCode:inputAddress[@"postalCode"]];
+    [address setCountry:inputAddress[@"country"]];
+    [address setPhone:inputAddress[@"phone"]];
+    [address setEmail:inputAddress[@"email"]];
+    
+    return address;
+}
+@end

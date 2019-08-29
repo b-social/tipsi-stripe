@@ -11,9 +11,10 @@
 #import <React/RCTConvert.h>
 
 #import "TPSError.h"
-#import "RCTConvert+STPToken.h"
-#import "RCTConvert+STPBankAccountHolderType.h"
+#import "RCTConvert+STPAddress.h"
 #import "RCTConvert+STPBankAccountStatus.h"
+#import "RCTConvert+STPBankAccountHolderType.h"
+#import "RCTConvert+STPToken.h"
 #import "STPAPIClient+ApplePayWithPaymentMethod.h"
 #import "RCTConvert+STPPaymentMethod.h"
 #import "RCTConvert+STPPaymentMethodCardParams.h"
@@ -155,70 +156,6 @@ NSString * const TPSPaymentNetworkVisa = @"visa";
 
 @end
 
-@implementation RCTConvert (STPBillingAddressFields)
-
-+ (STPBillingAddressFields)STPBillingAddressFields:(NSString*)inputType {
-    if ([inputType isEqualToString:@"zip"]) {
-        return STPBillingAddressFieldsZip;
-    }
-    if ([inputType isEqualToString:@"full"]) {
-        return STPBillingAddressFieldsFull;
-    }
-    return STPBillingAddressFieldsNone;
-}
-
-@end
-
-@implementation RCTConvert (STPAddress)
-
-+ (STPAddress *)STPAddress:(NSDictionary*)inputAddress {
-    STPAddress *address = [[STPAddress alloc] init];
-
-    [address setName:inputAddress[@"name"]];
-    [address setLine1:inputAddress[@"line1"]];
-    [address setLine2:inputAddress[@"line2"]];
-    [address setCity:inputAddress[@"city"]];
-    [address setState:inputAddress[@"state"]];
-    [address setPostalCode:inputAddress[@"postalCode"]];
-    [address setCountry:inputAddress[@"country"]];
-    [address setPhone:inputAddress[@"phone"]];
-    [address setEmail:inputAddress[@"email"]];
-
-    return address;
-}
-@end
-
-@implementation RCTConvert (STPUserInformation)
-
-+ (STPUserInformation *)STPUserInformation:(NSDictionary*)inputInformation {
-    STPUserInformation *userInformation = [[STPUserInformation alloc] init];
-
-    [userInformation setBillingAddress: [RCTConvert STPAddress:inputInformation[@"billingAddress"]]];
-    [userInformation setShippingAddress: [RCTConvert STPAddress:inputInformation[@"shippingAddress"]]];
-
-    return userInformation;
-}
-
-@end
-
-@implementation RCTConvert (STPTheme)
-
-+ (STPTheme *)STPTheme:(NSDictionary*)options {
-    STPTheme *theme = [[STPTheme alloc] init];
-
-    [theme setPrimaryBackgroundColor:[RCTConvert UIColor:options[@"primaryBackgroundColor"]]];
-    [theme setSecondaryBackgroundColor:[RCTConvert UIColor:options[@"secondaryBackgroundColor"]]];
-    [theme setPrimaryForegroundColor:[RCTConvert UIColor:options[@"primaryForegroundColor"]]];
-    [theme setSecondaryForegroundColor:[RCTConvert UIColor:options[@"secondaryForegroundColor"]]];
-    [theme setAccentColor:[RCTConvert UIColor:options[@"accentColor"]]];
-    [theme setErrorColor:[RCTConvert UIColor:options[@"errorColor"]]];
-    [theme setErrorColor:[RCTConvert UIColor:options[@"errorColor"]]];
-    // TODO: process font vars
-
-    return theme;
-}
-@end
-
 @implementation RCTConvert (PKShippingType)
 
 + (PKShippingType)PKShippingType:(NSString*)inputType {
@@ -237,7 +174,6 @@ NSString * const TPSPaymentNetworkVisa = @"visa";
 }
 
 @end
-
 
 @implementation StripeModule
 {
@@ -599,7 +535,12 @@ RCT_EXPORT_METHOD(paymentRequestWithApplePay:(NSArray *)items
         [summaryItems addObject:summaryItem];
     }
 
-    PKPaymentRequest *paymentRequest = [Stripe paymentRequestWithMerchantIdentifier:merchantId country:countryCode currency:currencyCode];
+    PKPaymentRequest *paymentRequest =
+      [Stripe paymentRequestWithMerchantIdentifier:merchantId
+                                           country:countryCode
+                                          currency:currencyCode];
+    
+    paymentRequest.supportedNetworks = @[PKPaymentNetworkMasterCard, PKPaymentNetworkVisa];
 
     [paymentRequest setRequiredShippingAddressFields:requiredShippingAddressFields];
     [paymentRequest setRequiredBillingAddressFields:requiredBillingAddressFields];
