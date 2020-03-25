@@ -29,7 +29,8 @@ const NativePaymentCardTextField = requireNativeComponent('TPSCardField', Paymen
     enabled: true,
     onChange: true,
     params: true, // Currently iOS only
-    keyboardAppearance: true, // iOS only
+    keyboardAppearance: true, // iOS only,
+    postalCodeEntryEnabled: true,
   },
 })
 
@@ -51,6 +52,7 @@ export default class PaymentCardTextField extends Component {
         textErrorColor: PropTypes.string,
         placeholderColor: PropTypes.string,
         keyboardAppearance: PropTypes.oneOf(['default', 'light', 'dark']),
+        postalCodeEntryEnabled: PropTypes.bool,
       },
       android: {
         setEnabled: PropTypes.bool,
@@ -135,6 +137,7 @@ export default class PaymentCardTextField extends Component {
       expirationPlaceholder,
       cvcPlaceholder,
       keyboardAppearance,
+      postalCodeEntryEnabled,
       ...rest
     } = this.props
 
@@ -195,6 +198,7 @@ export default class PaymentCardTextField extends Component {
             textErrorColor={textErrorColor}
             placeholderColor={placeholderColor}
             keyboardAppearance={keyboardAppearance}
+            postalCodeEntryEnabled={postalCodeEntryEnabled}
 
             // Android only
             cardNumber={cardNumber}

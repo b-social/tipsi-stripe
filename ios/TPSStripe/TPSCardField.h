@@ -24,6 +24,7 @@
 @property(nonatomic, assign) CGFloat borderWidth;
 @property(nonatomic, assign) CGFloat cornerRadius;
 @property(nonatomic, assign) UIKeyboardAppearance keyboardAppearance;
+@property(nonatomic, assign) BOOL postalCodeEntryEnabled;
 - (void)setCardParams:(STPCardParams *)cardParams;
 
 @end

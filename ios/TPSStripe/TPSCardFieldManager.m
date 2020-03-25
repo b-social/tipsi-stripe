@@ -66,5 +66,7 @@ RCT_CUSTOM_VIEW_PROPERTY(keyboardAppearance, NSString, __unused TPSCardField)
     [view setKeyboardAppearance:[RCTConvert UIKeyboardAppearance:json]];
 }
 
+RCT_EXPORT_VIEW_PROPERTY(postalCodeEntryEnabled, BOOL);
+
 
 @end

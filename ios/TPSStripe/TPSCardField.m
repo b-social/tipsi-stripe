@@ -177,6 +177,14 @@
   _paymentCardTextField.keyboardAppearance = keyboardAppearance;
 }
 
+- (BOOL)postalCodeEntryEnabled {
+  return _paymentCardTextField.postalCodeEntryEnabled;
+}
+
+- (void)setPostalCodeEntryEnabled:(BOOL)postalCodeEntryEnabled {
+  _paymentCardTextField.postalCodeEntryEnabled = postalCodeEntryEnabled;
+}
+
 #pragma mark - STPPaymentCardTextFieldDelegate
 
 - (void)paymentCardTextFieldDidChange:(STPPaymentCardTextField *)textField {
